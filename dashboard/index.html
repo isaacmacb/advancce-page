@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | ADVANNCE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="dashboard-page">
+        <div class="container">
+
+            <!-- HEADER -->
+            <header class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div>
+                        <div class="user-name" id="userName">Usuário</div>
+                        <div class="user-email" id="userEmail">email@email.com</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="../index.html" class="btn-back-site"><i class="fas fa-home"></i> Site</a>
+                    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                </div>
+            </header>
+
+            <!-- NAVEGAÇÃO -->
+            <nav class="dashboard-nav">
+                <a href="index.html" class="active"><i class="fas fa-home"></i> Visão Geral</a>
+                <a href="perfil.html"><i class="fas fa-user"></i> Meus Dados</a>
+                <a href="servicos.html"><i class="fas fa-box"></i> Meus Serviços</a>
+                <a href="tickets.html"><i class="fas fa-ticket"></i> Tickets</a>
+                <a href="notificacoes.html"><i class="fas fa-bell"></i> Notificações</a>
+                <a href="relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                <a href="bot.html"><i class="fas fa-robot"></i> Dashboard Bot</a>
+                <!-- ADMIN LINK - SÓ APARECE PARA ADMINS (INICIALMENTE OCULTO) -->
+                <a href="../admin/admin.html" id="adminLink" style="display: none; color: #ff3b3b; font-weight: 600; border: 1px solid rgba(255,59,59,0.2); border-radius: 8px; padding: 8px 16px;">
+                    <i class="fas fa-shield-alt"></i> Admin
+                </a>
+            </nav>
+
+            <!-- BOAS-VINDAS -->
+            <section class="welcome-section" id="welcomeSection">
+                <span class="icon" id="welcomeIcon">🚀</span>
+                <h1 id="welcomeTitle">Bem-vindo, <span id="welcomeName">Usuário</span>!</h1>
+                <p id="welcomeMessage">
+                    Você ainda não contratou nenhum serviço da ADVANNCE.
+                    <br>
+                    Conheça nossas soluções e escolha a melhor para o seu projeto.
+                </p>
+                <div id="welcomeButtons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#servicos" class="btn-primary-custom"><i class="fas fa-rocket"></i> Ver Serviços</a>
+                    <a href="https://wa.me/558594084279" target="_blank" class="btn-secondary-custom"><i class="fab fa-whatsapp"></i> Falar com Especialista</a>
+                </div>
+            </section>
+
+            <!-- MÉTRICAS -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="number" id="totalServicos">0</div>
+                    <div class="label">Serviços Ativos</div>
+                </div>
+                <div class="metric-card">
+                    <div class="number">0</div>
+                    <div class="label">Tickets Abertos</div>
+                </div>
+                <div class="metric-card">
+                    <div class="number">0</div>
+                    <div class="label">Dias de Uso</div>
+                </div>
+            </div>
+
+            <!-- SERVIÇOS -->
+            <h2 class="section-title" id="servicos">💡 Conheça nossos <span>serviços</span></h2>
+            <div class="services-grid" id="servicesGrid">
+                <div class="service-card">
+                    <span class="icon">🤖</span>
+                    <h3>Advancce Hub</h3>
+                    <p>Bots inteligentes, moderação automatizada, sistema de tickets e logs avançados.</p>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Hub" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                </div>
+
+                <div class="service-card">
+                    <span class="icon">🛡️</span>
+                    <h3>Advancce Shield</h3>
+                    <p>Proteção contra ameaças, monitoramento contínuo, análise de comportamento e segurança digital.</p>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Shield" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                </div>
+
+                <div class="service-card">
+                    <span class="icon">💻</span>
+                    <h3>Advancce Dev</h3>
+                    <p>Desenvolvimento de sistemas sob medida, aplicações web, desktop e automações.</p>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Dev" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                </div>
+
+                <div class="service-card optimizer-card">
+                    <span class="icon">⚡</span>
+                    <h3>Advancce Optimizer</h3>
+                    <p>Otimize seu computador com um clique. Melhore FPS, reduza latência e limpe arquivos desnecessários.</p>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Optimizer" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                </div>
+            </div>
+
+            <!-- TICKETS -->
+            <div class="tickets-preview">
+                <div class="header">
+                    <h3><i class="fas fa-ticket-alt"></i> Últimos Tickets</h3>
+                    <a href="tickets.html"><i class="fas fa-arrow-right"></i> Ver todos</a>
+                </div>
+                <div class="empty-tickets">
+                    <i class="fas fa-inbox"></i>
+                    <p>Nenhum ticket aberto.</p>
+                    <span>Precisa de ajuda? <a href="tickets.html">Abra um ticket</a></span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        const SUPABASE_URL = "https://bdavgvwaxlokeoaichsw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_C1gh4XFD2148HjtSMzEEFg_2-A8S5IY";
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userAvatar = document.getElementById('userAvatar');
+        const welcomeName = document.getElementById('welcomeName');
+        const totalServicos = document.getElementById('totalServicos');
+        const adminLink = document.getElementById('adminLink');
+
+        // ============================================
+        // VERIFICAR SE É ADMIN (APENAS NO BANCO)
+        // ============================================
+        async function checkIsAdmin(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('admins')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+
+                if (error) throw error;
+                return data !== null;
+            } catch (error) {
+                console.log('❌ Erro ao verificar admin:', error);
+                return false;
+            }
+        }
+
+        // ============================================
+        // MOSTRAR/ESCONDER LINK ADMIN (APENAS PARA ADMINS REAIS)
+        // ============================================
+        async function showAdminLink(userId) {
+            // Verifica no banco de dados se o usuário é admin
+            const isAdmin = await checkIsAdmin(userId);
+            
+            if (isAdmin) {
+                adminLink.style.display = 'flex';
+                adminLink.style.alignItems = 'center';
+                adminLink.style.gap = '6px';
+                console.log('✅ Link Admin visível para:', userId);
+            } else {
+                adminLink.style.display = 'none';
+                console.log('❌ Link Admin oculto para:', userId);
+            }
+        }
+
+        // ============================================
+        // VERIFICAR ASSINATURAS DO USUÁRIO
+        // ============================================
+        async function checkUserSubscriptions(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('subscriptions')
+                    .select('service, status')
+                    .eq('user_id', userId)
+                    .eq('status', 'active');
+
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('❌ Erro ao verificar assinaturas:', error);
+                return [];
+            }
+        }
+
+        // ============================================
+        // ATUALIZAR MENSAGEM DE BOAS-VINDAS
+        // ============================================
+        function updateWelcomeMessage(subscriptions, userName) {
+            const welcomeIcon = document.getElementById('welcomeIcon');
+            const welcomeTitle = document.getElementById('welcomeTitle');
+            const welcomeMessage = document.getElementById('welcomeMessage');
+            const welcomeButtons = document.getElementById('welcomeButtons');
+
+            if (subscriptions.length > 0) {
+                const serviceNames = subscriptions.map(s => {
+                    const names = {
+                        'hub': 'Hub',
+                        'boost': 'Boost',
+                        'shield': 'Shield',
+                        'dev': 'Dev',
+                        'optimizer': 'Optimizer'
+                    };
+                    return names[s.service] || s.service;
+                }).join(', ');
+
+                welcomeIcon.textContent = '🎉';
+                welcomeTitle.innerHTML = `Bem-vindo de volta, <span>${userName}</span>!`;
+                welcomeMessage.innerHTML = `
+                    Você já possui os seguintes serviços ativos: <strong>${serviceNames}</strong>.
+                    <br>
+                    Acesse seus serviços abaixo ou conheça outras soluções.
+                `;
+                welcomeButtons.innerHTML = `
+                    <a href="#servicos" class="btn-primary-custom"><i class="fas fa-rocket"></i> Ver Meus Serviços</a>
+                    <a href="https://wa.me/558594084279" target="_blank" class="btn-secondary-custom"><i class="fab fa-whatsapp"></i> Suporte</a>
+                `;
+                totalServicos.textContent = subscriptions.length;
+            } else {
+                welcomeIcon.textContent = '🚀';
+                welcomeTitle.innerHTML = `Bem-vindo, <span>${userName}</span>!`;
+                welcomeMessage.innerHTML = `
+                    Você ainda não contratou nenhum serviço da ADVANNCE.
+                    <br>
+                    Conheça nossas soluções e escolha a melhor para o seu projeto.
+                `;
+                welcomeButtons.innerHTML = `
+                    <a href="#servicos" class="btn-primary-custom"><i class="fas fa-rocket"></i> Ver Serviços</a>
+                    <a href="https://wa.me/558594084279" target="_blank" class="btn-secondary-custom"><i class="fab fa-whatsapp"></i> Falar com Especialista</a>
+                `;
+                totalServicos.textContent = '0';
+            }
+        }
+
+        // ============================================
+        // ATUALIZAR CARDS DE SERVIÇOS
+        // ============================================
+        function updateServiceCards(subscriptions) {
+            const serviceCards = document.querySelectorAll('.service-card');
+            const activeServices = subscriptions.map(s => s.service);
+
+            serviceCards.forEach(card => {
+                const link = card.querySelector('.btn-contract');
+                if (!link) return;
+
+                const cardText = card.querySelector('h3')?.textContent || '';
+                const serviceMap = {
+                    'Advancce Hub': 'hub',
+                    'Advancce Boost': 'boost',
+                    'Advancce Shield': 'shield',
+                    'Advancce Dev': 'dev',
+                    'Advancce Optimizer': 'optimizer'
+                };
+
+                const serviceKey = serviceMap[cardText];
+                if (!serviceKey) return;
+
+                if (activeServices.includes(serviceKey)) {
+                    link.textContent = '✅ Acessar';
+                    link.href = `downloads/advancce-${serviceKey}/`;
+                    link.classList.add('btn-optimizer');
+                    link.style.borderColor = '#2ed573';
+                    link.style.color = '#2ed573';
+                } else {
+                    link.textContent = '📩 Contratar Agora';
+                    link.href = `https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20${cardText}`;
+                    link.target = '_blank';
+                    link.classList.remove('btn-optimizer');
+                    link.style.borderColor = '#ff3b3b';
+                    link.style.color = '#ff3b3b';
+                }
+            });
+        }
+
+        // ============================================
+        // VERIFICAR USUÁRIO
+        // ============================================
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (session) {
+                const user = session.user;
+                const name = user.user_metadata?.full_name || 'Usuário';
+                const email = user.email || 'email@email.com';
+                const initial = name.charAt(0).toUpperCase();
+
+                userName.textContent = name;
+                userEmail.textContent = email;
+                userAvatar.textContent = initial;
+                welcomeName.textContent = name;
+
+                localStorage.setItem('userName', name);
+                localStorage.setItem('userEmail', email);
+
+                const subscriptions = await checkUserSubscriptions(user.id);
+                console.log('📦 Assinaturas ativas:', subscriptions);
+
+                updateWelcomeMessage(subscriptions, name);
+                updateServiceCards(subscriptions);
+
+                // ============================================
+                // VERIFICAR ADMIN E MOSTRAR LINK (APENAS PARA ADMINS REAIS)
+                // ============================================
+                await showAdminLink(user.id);
+
+            } else {
+                window.location.href = '../login/index.html';
+            }
+        });
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            window.location.href = '../login/index.html';
+        });
+    </script>
+</body>
+</html>

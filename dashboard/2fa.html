@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurar 2FA | Advancce</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .config-page {
+            min-height: 100vh;
+            padding: 120px 20px 60px;
+            background: var(--bg);
+        }
+
+        .config-box {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .config-box h2 {
+            margin-bottom: 10px;
+        }
+
+        .config-box p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 16px;
+        }
+
+        .qr-container img {
+            width: 200px;
+            height: 200px;
+        }
+
+        .secret-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: var(--primary);
+            user-select: all;
+            cursor: pointer;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .step-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-list li .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 59, 59, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #666, #444);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 1.5rem;
+            text-align: center;
+            letter-spacing: 6px;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .alert-success {
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid rgba(46, 213, 115, 0.2);
+            color: #2ed573;
+        }
+
+        .alert-danger {
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            color: var(--primary-light);
+        }
+
+        .alert-info {
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            color: #58a6ff;
+        }
+
+        .hidden { display: none; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(46, 213, 115, 0.15);
+            color: #2ed573;
+            border: 1px solid rgba(46, 213, 115, 0.2);
+        }
+
+        .status-badge.inactive {
+            background: rgba(255, 59, 59, 0.1);
+            color: var(--primary-light);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 480px) {
+            .config-box { padding: 25px; }
+            .qr-container img { width: 150px; height: 150px; }
+            .form-group input { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="config-page">
+        <div class="container">
+            <div class="config-box">
+                <h2>🔐 Autenticação de Dois Fatores</h2>
+                <p>Proteja sua conta com uma camada extra de segurança.</p>
+
+                <!-- Status -->
+                <div id="statusContainer">
+                    <div id="statusEnabled" class="alert alert-success" style="display: none;">
+                        ✅ <strong>2FA ATIVADO</strong> — Sua conta está protegida com o Google Authenticator.
+                    </div>
+                    <div id="statusDisabled" class="alert alert-danger">
+                        ⚠️ <strong>2FA DESATIVADO</strong> — Ative para maior segurança.
+                    </div>
+                </div>
+
+                <!-- Configuração -->
+                <div id="setupContainer">
+                    <h4 style="margin-top: 20px;">📱 Configurar Google Authenticator</h4>
+                    <p style="font-size: 0.9rem;">Siga os passos abaixo para ativar o 2FA.</p>
+
+                    <ol class="step-list">
+                        <li>
+                            <span class="step-number">1</span>
+                            <span class="step-text">Baixe o <strong>Google Authenticator</strong> na App Store ou Google Play</span>
+                        </li>
+                        <li>
+                            <span class="step-number">2</span>
+                            <span class="step-text">Escaneie o <strong>QR Code</strong> abaixo com o app</span>
+                        </li>
+                        <li>
+                            <span class="step-number">3</span>
+                            <span class="step-text">Digite o <strong>código de 6 dígitos</strong> gerado pelo app</span>
+                        </li>
+                    </ol>
+
+                    <div class="qr-container">
+                        <img id="qrCode" src="" alt="QR Code para 2FA">
+                    </div>
+
+                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">
+                        Ou digite manualmente o código:
+                    </p>
+                    <div class="secret-box" id="secretCode" onclick="copySecret()">
+                        Carregando...
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="codeInput" maxlength="6" placeholder="000000" autofocus>
+                    </div>
+
+                    <div id="alertMessage" class="alert hidden"></div>
+
+                    <button class="btn-primary-custom" id="verifyBtn">✅ Verificar e Ativar 2FA</button>
+                </div>
+
+                <!-- Desativar -->
+                <div id="disableContainer" style="display: none; margin-top: 20px;">
+                    <hr style="border-color: var(--border); margin: 20px 0;">
+                    <button class="btn-primary-custom btn-danger" id="disableBtn">🔓 Desativar 2FA</button>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="/Advancce/dashboard/" class="back-home">← Voltar para o Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <script>
+        // ============================================
+        // CONFIGURAÇÃO DO FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCw-z7Gq7qQY...", // COLOQUE SUA API KEY AQUI
+            authDomain: "SEU_PROJETO.firebaseapp.com",
+            projectId: "SEU_PROJETO",
+            storageBucket: "SEU_PROJETO.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // ============================================
+        // ELEMENTOS
+        // ============================================
+        const qrCode = document.getElementById('qrCode');
+        const secretCode = document.getElementById('secretCode');
+        const codeInput = document.getElementById('codeInput');
+        const verifyBtn = document.getElementById('verifyBtn');
+        const alertMessage = document.getElementById('alertMessage');
+        const statusEnabled = document.getElementById('statusEnabled');
+        const statusDisabled = document.getElementById('statusDisabled');
+        const setupContainer = document.getElementById('setupContainer');
+        const disableContainer = document.getElementById('disableContainer');
+        const disableBtn = document.getElementById('disableBtn');
+
+        let currentUser = null;
+        let pendingCredential = null;
+
+        // ============================================
+        // VERIFICAR USUÁRIO
+        // ============================================
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = '/Advancce/login/';
+                return;
+            }
+
+            currentUser = user;
+
+            const enrolledFactors = user.multiFactor.enrolledFactors || [];
+            const has2FA = enrolledFactors.some(f => f.factorId === 'totp');
+
+            if (has2FA) {
+                statusEnabled.style.display = 'block';
+                statusDisabled.style.display = 'none';
+                setupContainer.style.display = 'none';
+                disableContainer.style.display = 'block';
+            } else {
+                statusEnabled.style.display = 'none';
+                statusDisabled.style.display = 'block';
+                setupContainer.style.display = 'block';
+                disableContainer.style.display = 'none';
+                generateQRCode();
+            }
+        });
+
+        // ============================================
+        // GERAR QR CODE
+        // ============================================
+        async function generateQRCode() {
+            try {
+                const session = await firebase.auth.MultiFactor.getSession(currentUser);
+                const totpFactor = new firebase.auth.TOTPMultiFactorGenerator();
+                const assertion = await totpFactor.generateSecret(session);
+                pendingCredential = assertion;
+
+                const otpAuthUrl = `otpauth://totp/Advancce:${currentUser.email}?secret=${assertion.secret}&issuer=Advancce`;
+
+                qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(otpAuthUrl)}`;
+                secretCode.textContent = assertion.secret;
+                window.currentSecret = assertion.secret;
+
+            } catch (error) {
+                showAlert('Erro ao gerar QR Code: ' + error.message, 'danger');
+            }
+        }
+
+        // ============================================
+        // COPIAR CÓDIGO
+        // ============================================
+        function copySecret() {
+            const text = window.currentSecret || '';
+            if (text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = secretCode.textContent;
+                    secretCode.textContent = '✅ Copiado!';
+                    setTimeout(() => { secretCode.textContent = original; }, 2000);
+                });
+            }
+        }
+
+        // ============================================
+        // VERIFICAR E ATIVAR 2FA
+        // ============================================
+        verifyBtn.addEventListener('click', async () => {
+            const code = codeInput.value.trim();
+
+            if (!code || code.length !== 6) {
+                showAlert('Digite o código de 6 dígitos do Google Authenticator.', 'danger');
+                return;
+            }
+
+            try {
+                const multiFactorAssertion = firebase.auth.TOTPMultiFactorGenerator.assertionForEnrollment(
+                    pendingCredential.secret,
+                    code
+                );
+
+                await currentUser.multiFactor.enroll(multiFactorAssertion, 'Google Authenticator');
+                showAlert('✅ 2FA ativado com sucesso!', 'success');
+                setTimeout(() => window.location.reload(), 2000);
+
+            } catch (error) {
+                showAlert('Código inválido. Tente novamente.', 'danger');
+            }
+        });
+
+        // ============================================
+        // DESATIVAR 2FA
+        // ============================================
+        disableBtn.addEventListener('click', async () => {
+            if (!confirm('Tem certeza que deseja desativar o 2FA?')) return;
+
+            try {
+                const enrolledFactors = currentUser.multiFactor.enrolledFactors || [];
+                const totpFactors = enrolledFactors.filter(f => f.factorId === 'totp');
+
+                for (const factor of totpFactors) {
+                    await currentUser.multiFactor.unenroll(factor);
+                }
+
+                showAlert('✅ 2FA desativado com sucesso!', 'success');
+                setTimeout(() => window.location.reload(), 2000);
+
+            } catch (error) {
+                showAlert('Erro ao desativar 2FA.', 'danger');
+            }
+        });
+
+        // ============================================
+        // ENTER PARA VERIFICAR
+        // ============================================
+        codeInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') verifyBtn.click();
+        });
+
+        // ============================================
+        // FUNÇÕES AUXILIARES
+        // ============================================
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = `alert alert-${type}`;
+            alertMessage.classList.remove('hidden');
+            setTimeout(() => alertMessage.classList.add('hidden'), 5000);
+        }
+    </script>
+</body>
+</html>

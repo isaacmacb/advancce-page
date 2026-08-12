@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Dados | ADVANNCE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0a0a0f;
+            color: #e8edf5;
+        }
+        .dashboard-page { min-height: 100vh; padding: 100px 20px 60px; background: #0a0a0f; }
+        .container { max-width: 700px; margin: 0 auto; }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-avatar {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff3b3b, #e03030);
+            display: flex;
+            align-items: center; justify-content: center;
+            font-size: 1.5rem; font-weight: 700; color: #fff;
+        }
+        .user-name { font-weight: 700; font-size: 1.2rem; }
+        .user-email { color: #9aa4b8; font-size: 0.9rem; }
+
+        .btn-logout {
+            padding: 10px 24px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: transparent;
+            color: #e8edf5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover { border-color: #ff3b3b; color: #ff3b3b; }
+
+        .dashboard-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+        }
+
+        .dashboard-nav a {
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #9aa4b8;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dashboard-nav a:hover {
+            background: rgba(255,255,255,0.04);
+            color: #e8edf5;
+        }
+
+        .dashboard-nav a.active {
+            background: rgba(255,59,59,0.12);
+            color: #ff3b3b;
+            border: 1px solid rgba(255,59,59,0.2);
+        }
+
+        .profile-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .profile-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-card .subtitle {
+            color: #9aa4b8;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #e8edf5;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #e8edf5;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #ff3b3b;
+        }
+
+        .form-group input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-save {
+            padding: 14px 35px;
+            background: linear-gradient(135deg, #ff3b3b, #e03030);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255,59,59,0.3);
+        }
+
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #9aa4b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #ff3b3b;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .alert-success {
+            background: rgba(46,213,115,0.1);
+            border: 1px solid rgba(46,213,115,0.2);
+            color: #2ed573;
+        }
+        .alert-danger {
+            background: rgba(255,59,59,0.1);
+            border: 1px solid rgba(255,59,59,0.2);
+            color: #ff6b6b;
+        }
+        .hidden { display: none; }
+
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; text-align: center; }
+            .user-info { flex-direction: column; }
+            .profile-card { padding: 25px; }
+            .dashboard-nav { flex-direction: column; }
+            .dashboard-nav a { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-page">
+        <div class="container">
+
+            <!-- HEADER -->
+            <header class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div>
+                        <div class="user-name" id="userName">Usuário</div>
+                        <div class="user-email" id="userEmail">email@email.com</div>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">Sair</button>
+            </header>
+
+            <!-- NAVEGAÇÃO -->
+            <nav class="dashboard-nav">
+                <a href="index.html"><i class="fas fa-home"></i> Visão Geral</a>
+                <a href="perfil.html" class="active"><i class="fas fa-user"></i> Meus Dados</a>
+                <a href="servicos.html"><i class="fas fa-box"></i> Meus Serviços</a>
+                <a href="tickets.html"><i class="fas fa-ticket"></i> Tickets</a>
+                <a href="notificacoes.html"><i class="fas fa-bell"></i> Notificações</a>
+                <a href="relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                <a href="bot.html"><i class="fas fa-robot"></i> Dashboard Bot</a>
+            </nav>
+
+            <!-- PERFIL -->
+            <div class="profile-card">
+                <h2>👤 Meus Dados</h2>
+                <p class="subtitle">Visualize e atualize suas informações pessoais</p>
+
+                <div id="alertSuccess" class="alert alert-success hidden">✅ Dados atualizados com sucesso!</div>
+                <div id="alertError" class="alert alert-danger hidden">❌ Erro ao atualizar dados.</div>
+
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        <input type="text" id="profileName" placeholder="Seu nome completo">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="profileEmail" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Nova Senha</label>
+                        <input type="password" id="profilePassword" placeholder="Digite a nova senha (opcional)">
+                    </div>
+                    <button type="submit" class="btn-save">Salvar Alterações</button>
+                </form>
+
+                <a href="index.html" class="btn-back">← Voltar para o Dashboard</a>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        const SUPABASE_URL = "https://bdavgvwaxlokeoaichsw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_C1gh4XFD2148HjtSMzEEFg_2-A8S5IY";
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let currentUser = null;
+
+        const profileName = document.getElementById('profileName');
+        const profileEmail = document.getElementById('profileEmail');
+        const profileForm = document.getElementById('profileForm');
+        const alertSuccess = document.getElementById('alertSuccess');
+        const alertError = document.getElementById('alertError');
+
+        // Atualizar header com dados do usuário
+        function updateUserUI(user) {
+            const name = user.user_metadata?.full_name || 'Usuário';
+            const email = user.email || 'email@email.com';
+            const initial = name.charAt(0).toUpperCase();
+
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('userAvatar').textContent = initial;
+        }
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                currentUser = session.user;
+                profileName.value = currentUser.user_metadata?.full_name || '';
+                profileEmail.value = currentUser.email || '';
+                updateUserUI(currentUser);
+            } else {
+                window.location.href = '../login/index.html';
+            }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = '../login/index.html';
+        });
+
+        profileForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = profileName.value.trim();
+            const password = document.getElementById('profilePassword').value;
+
+            if (!name) {
+                alertError.textContent = '❌ O nome é obrigatório.';
+                alertError.classList.remove('hidden');
+                alertSuccess.classList.add('hidden');
+                return;
+            }
+
+            try {
+                // Atualizar nome
+                const { error: updateError } = await supabaseClient.auth.updateUser({
+                    data: { full_name: name }
+                });
+
+                if (updateError) throw updateError;
+
+                // Atualizar senha se preenchida
+                if (password && password.length >= 6) {
+                    const { error: passError } = await supabaseClient.auth.updateUser({
+                        password: password
+                    });
+                    if (passError) throw passError;
+                }
+
+                alertSuccess.classList.remove('hidden');
+                alertError.classList.add('hidden');
+
+                // Atualizar UI
+                const currentSession = await supabaseClient.auth.getSession();
+                if (currentSession.data.session) {
+                    updateUserUI(currentSession.data.session.user);
+                }
+
+                setTimeout(() => alertSuccess.classList.add('hidden'), 3000);
+
+            } catch (error) {
+                alertError.textContent = '❌ ' + error.message;
+                alertError.classList.remove('hidden');
+                alertSuccess.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Admins | ADVANNCE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ==========================================
+           RESET E BASE
+        ========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0a0a0f;
+            color: #e8edf5;
+            min-height: 100vh;
+        }
+        .admin-page { min-height: 100vh; padding: 100px 20px 60px; background: #0a0a0f; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .admin-header .title { font-size: 1.8rem; font-weight: 800; }
+        .admin-header .title span { color: #ff3b3b; }
+        .admin-header .badge {
+            padding: 6px 18px;
+            border-radius: 50px;
+            background: rgba(255,59,59,0.15);
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,59,59,0.2);
+        }
+        .btn-logout {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: transparent;
+            color: #e8edf5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover { border-color: #ff3b3b; color: #ff3b3b; }
+        .btn-back {
+            color: #9aa4b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-back:hover { border-color: #ff3b3b; color: #ff3b3b; }
+        .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+        .section-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .section-card .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .section-card .section-header h3 { font-size: 1.2rem; font-weight: 700; }
+        .section-card .section-header h3 span { color: #ff3b3b; }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #e8edf5;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #e8edf5;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus { border-color: #ff3b3b; }
+        .form-group input::placeholder { color: #6a7a8a; }
+
+        .btn-primary {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff3b3b, #e03030);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,59,59,0.3); }
+        .btn-success { background: linear-gradient(135deg, #2ed573, #26a65b); }
+        .btn-success:hover { box-shadow: 0 8px 25px rgba(46,213,115,0.3); }
+
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th {
+            text-align: left;
+            padding: 12px;
+            color: #9aa4b8;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-weight: 600;
+        }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        td .email { color: #9aa4b8; font-size: 0.8rem; }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.admin { background: rgba(255,59,59,0.15); color: #ff6b6b; }
+        .status-badge.user { background: rgba(46,213,115,0.15); color: #2ed573; }
+
+        .btn-sm {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-sm:hover { transform: scale(1.05); }
+        .btn-sm.danger { background: #ff3b3b; }
+        .btn-sm.success { background: #2ed573; }
+        .btn-sm.secondary { background: #6a7a8a; }
+        .actions-cell { display: flex; gap: 5px; flex-wrap: wrap; }
+
+        .loading { text-align: center; padding: 40px; color: #6a7a8a; }
+        .loading i { font-size: 2rem; display: block; margin-bottom: 10px; }
+        .empty-state { text-align: center; padding: 30px; color: #6a7a8a; }
+        .empty-state i { font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5; }
+
+        .count-badge {
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: rgba(255,59,59,0.1);
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            max-width: 400px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: rgba(46,213,115,0.95); color: #fff; border: 1px solid rgba(46,213,115,0.3); }
+        .toast.error { background: rgba(255,59,59,0.95); color: #fff; border: 1px solid rgba(255,59,59,0.3); }
+        .toast.info { background: rgba(88,166,255,0.95); color: #fff; border: 1px solid rgba(88,166,255,0.3); }
+
+        @media (max-width: 768px) {
+            .admin-header { flex-direction: column; text-align: center; }
+            .admin-header .header-actions { justify-content: center; }
+            .section-card { padding: 15px; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 8px 6px; }
+            .actions-cell { flex-direction: column; }
+            .toast { top: 10px; right: 10px; left: 10px; max-width: none; font-size: 0.9rem; padding: 12px 16px; }
+        }
+        @media (max-width: 480px) {
+            .admin-header .title { font-size: 1.2rem; }
+            .admin-header .badge { font-size: 0.7rem; padding: 4px 12px; }
+            .btn-primary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <div class="admin-page">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="admin-header">
+                <div>
+                    <div class="title">👑 Gerenciar <span>Administradores</span></div>
+                    <div style="color: #9aa4b8; font-size: 0.9rem;">Adicione ou remova administradores do sistema</div>
+                </div>
+                <div class="header-actions">
+                    <span class="badge"><i class="fas fa-shield-alt"></i> Admin</span>
+                    <a href="admin.html" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Voltar
+                    </a>
+                    <button class="btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+            </div>
+
+            <!-- ADICIONAR ADMIN -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>➕ Adicionar <span>Administrador</span></h3>
+                    <span style="color: #6a7a8a; font-size: 0.85rem;">Digite o email do usuário</span>
+                </div>
+                <form id="addAdminForm">
+                    <div class="form-group">
+                        <label>Email do Usuário</label>
+                        <input type="email" id="adminEmail" placeholder="usuario@email.com" required>
+                    </div>
+                    <button type="submit" class="btn-primary btn-success">
+                        <i class="fas fa-user-plus"></i> Adicionar como Admin
+                    </button>
+                </form>
+            </div>
+
+            <!-- LISTA DE ADMINS -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>👥 Administradores <span>Atuais</span></h3>
+                    <span class="count-badge" id="adminsCount">0</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminsTableBody">
+                            <tr>
+                                <td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;">
+                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        // ============================================
+        // SUPABASE CONFIG
+        // ============================================
+        const SUPABASE_URL = "https://bdavgvwaxlokeoaichsw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_C1gh4XFD2148HjtSMzEEFg_2-A8S5IY";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================
+        // TOAST
+        // ============================================
+        const toast = document.getElementById('toast');
+        let toastTimeout;
+
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // ============================================
+        // VERIFICAR ADMIN
+        // ============================================
+        async function checkIsAdmin(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('admins')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+                if (error) throw error;
+                return data !== null;
+            } catch { return false; }
+        }
+
+        // ============================================
+        // CARREGAR LISTA DE ADMINS (SEM RLS)
+        // ============================================
+        async function loadAdmins() {
+            try {
+                // Buscar todos os admins
+                const { data: admins, error: adminsError } = await supabaseClient
+                    .from('admins')
+                    .select('*');
+
+                if (adminsError) throw adminsError;
+
+                const tbody = document.getElementById('adminsTableBody');
+
+                if (!admins || admins.length === 0) {
+                    tbody.innerHTML =
+                        `<tr><td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;">
+                            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:10px;"></i>
+                            Nenhum administrador cadastrado
+                        </td></tr>`;
+                    document.getElementById('adminsCount').textContent = '0';
+                    return;
+                }
+
+                // Buscar informações dos usuários manualmente
+                let usersWithNames = [];
+
+                for (const admin of admins) {
+                    try {
+                        const { data: user } = await supabaseClient
+                            .from('user_profiles')
+                            .select('id, email, raw_user_meta_data')
+                            .eq('id', admin.user_id)
+                            .single();
+
+                        if (user) {
+                            usersWithNames.push({
+                                ...admin,
+                                email: user.email,
+                                name: user.raw_user_meta_data?.full_name || 'Sem nome'
+                            });
+                        } else {
+                            usersWithNames.push({
+                                ...admin,
+                                email: 'Usuário não encontrado',
+                                name: 'Desconhecido'
+                            });
+                        }
+                    } catch (e) {
+                        console.error('Erro ao buscar usuário:', admin.user_id);
+                        usersWithNames.push({
+                            ...admin,
+                            email: 'Erro ao carregar',
+                            name: 'Desconhecido'
+                        });
+                    }
+                }
+
+                tbody.innerHTML = '';
+
+                usersWithNames.forEach(admin => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${admin.name}</strong></td>
+                        <td><span class="email">${admin.email}</span></td>
+                        <td><span class="status-badge admin">👑 Admin</span></td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-sm danger" onclick="removeAdmin('${admin.user_id}')">
+                                    <i class="fas fa-trash"></i> Remover
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                document.getElementById('adminsCount').textContent = usersWithNames.length;
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar admins:', error);
+                document.getElementById('adminsTableBody').innerHTML = `
+                    <tr><td colspan="4" style="text-align:center;color:#ff6b6b;padding:20px;">
+                        ❌ Erro ao carregar administradores: ${error.message}
+                    </td></tr>
+                `;
+            }
+        }
+
+        // ============================================
+        // REMOVER ADMIN
+        // ============================================
+        window.removeAdmin = async function(userId) {
+            if (!confirm('Tem certeza que deseja remover este administrador?')) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('admins')
+                    .delete()
+                    .eq('user_id', userId);
+
+                if (error) throw error;
+
+                showToast('✅ Administrador removido com sucesso!', 'success');
+                await loadAdmins();
+
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao remover: ${error.message}`, 'error');
+            }
+        };
+
+        // ============================================
+        // ADICIONAR ADMIN
+        // ============================================
+        document.getElementById('addAdminForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('adminEmail').value.trim();
+
+            if (!email) {
+                showToast('❌ Digite um email válido.', 'error');
+                return;
+            }
+
+            try {
+                // Buscar usuário pelo email
+                const { data: users, error: userError } = await supabaseClient
+                    .from('user_profiles')
+                    .select('id, email')
+                    .eq('email', email);
+
+                if (userError) throw userError;
+
+                if (!users || users.length === 0) {
+                    showToast('❌ Usuário não encontrado. Verifique o email.', 'error');
+                    return;
+                }
+
+                const user = users[0];
+
+                // Verificar se já é admin
+                const { data: existing } = await supabaseClient
+                    .from('admins')
+                    .select('*')
+                    .eq('user_id', user.id)
+                    .single();
+
+                if (existing) {
+                    showToast('⚠️ Este usuário já é administrador.', 'info');
+                    return;
+                }
+
+                // Adicionar como admin
+                const { error: insertError } = await supabaseClient
+                    .from('admins')
+                    .insert({ user_id: user.id, role: 'admin' });
+
+                if (insertError) throw insertError;
+
+                showToast(`✅ ${email} agora é administrador!`, 'success');
+                document.getElementById('adminEmail').value = '';
+                await loadAdmins();
+
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao adicionar: ${error.message}`, 'error');
+            }
+        });
+
+        // ============================================
+        // VERIFICAR USUÁRIO
+        // ============================================
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (!session) {
+                window.location.href = '../login/index.html';
+                return;
+            }
+
+            const user = session.user;
+            console.log('👤 Usuário logado:', user.email);
+
+            // FORÇAR ADMIN PARA SEU ID
+            const adminIds = ['6e1b204b-7636-4abf-9a20-5a46e726906d'];
+            const isAdmin = adminIds.includes(user.id) || await checkIsAdmin(user.id);
+
+            if (!isAdmin) {
+                showToast('❌ Você não tem permissão.', 'error');
+                setTimeout(() => {
+                    window.location.href = '../dashboard/index.html';
+                }, 1500);
+                return;
+            }
+
+            await loadAdmins();
+        });
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = '../login/index.html';
+        });
+    </script>
+</body>
+</html>

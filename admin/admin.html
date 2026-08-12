@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | ADVANNCE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ==========================================
+           RESET E BASE
+        ========================================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #0a0a0f;
+            color: #e8edf5;
+            min-height: 100vh;
+        }
+        .admin-page { min-height: 100vh; padding: 100px 20px 60px; background: #0a0a0f; }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        /* ==========================================
+           HEADER ADMIN
+        ========================================== */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+        }
+        .admin-header .title { font-size: 1.8rem; font-weight: 800; }
+        .admin-header .title span { color: #ff3b3b; }
+        .admin-header .badge {
+            padding: 6px 18px;
+            border-radius: 50px;
+            background: rgba(255,59,59,0.15);
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,59,59,0.2);
+        }
+        .btn-logout {
+            padding: 8px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.06);
+            background: transparent;
+            color: #e8edf5;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover { border-color: #ff3b3b; color: #ff3b3b; }
+        .btn-dashboard-link {
+            color: #9aa4b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .btn-dashboard-link:hover { border-color: #ff3b3b; color: #ff3b3b; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* ==========================================
+           STATS GRID
+        ========================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .stat-card:hover { border-color: rgba(255,59,59,0.2); transform: translateY(-3px); }
+        .stat-card .stat-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
+        .stat-card .stat-number { font-size: 2.5rem; font-weight: 800; color: #ff3b3b; }
+        .stat-card .stat-label { color: #9aa4b8; font-size: 0.85rem; margin-top: 5px; }
+
+        /* ==========================================
+           SECTION CARDS
+        ========================================== */
+        .section-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .section-card .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .section-card .section-header h3 { font-size: 1.2rem; font-weight: 700; }
+        .section-card .section-header h3 span { color: #ff3b3b; }
+        .section-card .section-header .count-badge {
+            padding: 4px 14px;
+            border-radius: 50px;
+            background: rgba(255,59,59,0.1);
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           TABELAS
+        ========================================== */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { text-align: left; padding: 12px; color: #9aa4b8; border-bottom: 1px solid rgba(255,255,255,0.06); font-weight: 600; white-space: nowrap; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        td .email { color: #9aa4b8; font-size: 0.8rem; }
+        td .service-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 50px;
+            background: rgba(88,166,255,0.1);
+            border: 1px solid rgba(88,166,255,0.15);
+            color: #58a6ff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        /* ==========================================
+           STATUS BADGES
+        ========================================== */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .status-badge.active { background: rgba(46,213,115,0.15); color: #2ed573; }
+        .status-badge.inactive { background: rgba(255,59,59,0.15); color: #ff6b6b; }
+        .status-badge.expired { background: rgba(255,193,7,0.15); color: #ffc107; }
+        .status-badge.open { background: rgba(255,59,59,0.15); color: #ff6b6b; }
+        .status-badge.in-progress { background: rgba(255,193,7,0.15); color: #ffc107; }
+        .status-badge.done { background: rgba(46,213,115,0.15); color: #2ed573; }
+
+        /* ==========================================
+           BOTÕES DE AÇÃO
+        ========================================== */
+        .btn-sm {
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-sm:hover { transform: scale(1.05); }
+        .btn-sm.danger { background: #ff3b3b; }
+        .btn-sm.success { background: #2ed573; }
+        .btn-sm.warning { background: #ffc107; }
+        .btn-sm.primary { background: #58a6ff; }
+        .btn-sm.secondary { background: #6a7a8a; }
+        .actions-cell { display: flex; gap: 5px; flex-wrap: wrap; }
+
+        /* ==========================================
+           FEED
+        ========================================== */
+        .feed-list { display: flex; flex-direction: column; gap: 10px; }
+        .feed-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            border-left: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        .feed-item:hover { background: rgba(255,255,255,0.04); }
+        .feed-item .feed-time { color: #6a7a8a; font-size: 0.75rem; min-width: 60px; }
+        .feed-item .feed-text { flex: 1; }
+        .feed-item .feed-text strong { color: #e8edf5; }
+        .feed-item .feed-icon { font-size: 1.2rem; width: 30px; text-align: center; }
+        .feed-item .feed-time-full { font-size: 0.7rem; color: #6a7a8a; }
+
+        /* ==========================================
+           BOTÃO ADICIONAR
+        ========================================== */
+        .btn-add {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #ff3b3b, #e03030);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-add:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,59,59,0.3); color: #fff; }
+
+        .loading { text-align: center; padding: 40px; color: #6a7a8a; }
+        .loading i { font-size: 2rem; display: block; margin-bottom: 10px; }
+        .empty-state { text-align: center; padding: 30px; color: #6a7a8a; }
+        .empty-state i { font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5; }
+        .back-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #6a7a8a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: #ff3b3b; }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            max-width: 400px;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.success { background: rgba(46,213,115,0.95); color: #fff; border: 1px solid rgba(46,213,115,0.3); }
+        .toast.error { background: rgba(255,59,59,0.95); color: #fff; border: 1px solid rgba(255,59,59,0.3); }
+        .toast.info { background: rgba(88,166,255,0.95); color: #fff; border: 1px solid rgba(88,166,255,0.3); }
+
+        /* ==========================================
+           BOTÃO GERENCIAR ADMINS
+        ========================================== */
+        .btn-manage-admins {
+            padding: 8px 16px;
+            background: rgba(255,59,59,0.1);
+            border: 1px solid rgba(255,59,59,0.2);
+            border-radius: 8px;
+            color: #ff6b6b;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-manage-admins:hover {
+            background: rgba(255,59,59,0.2);
+            color: #ff3b3b;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
+        @media (max-width: 768px) {
+            .admin-header { flex-direction: column; text-align: center; }
+            .admin-header .header-actions { justify-content: center; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+            .stat-card .stat-number { font-size: 1.8rem; }
+            .section-card { padding: 15px; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 8px 6px; }
+            .actions-cell { flex-direction: column; }
+            .toast { top: 10px; right: 10px; left: 10px; max-width: none; font-size: 0.9rem; padding: 12px 16px; }
+            .btn-manage-admins { justify-content: center; }
+        }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .admin-header .title { font-size: 1.2rem; }
+            .admin-header .badge { font-size: 0.7rem; padding: 4px 12px; }
+            .btn-add { width: 100%; justify-content: center; }
+            .btn-manage-admins { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+    <div class="admin-page">
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="admin-header">
+                <div>
+                    <div class="title">🛡️ Painel <span>Administrativo</span></div>
+                    <div style="color: #9aa4b8; font-size: 0.9rem;">Visão completa de todos os clientes, serviços e tickets</div>
+                </div>
+                <div class="header-actions">
+                    <span class="badge"><i class="fas fa-shield-alt"></i> Admin</span>
+                    <a href="../dashboard/index.html" class="btn-dashboard-link">
+                        <i class="fas fa-user"></i> Meu Dashboard
+                    </a>
+                    <a href="gerenciar-admins.html" class="btn-manage-admins">
+                        <i class="fas fa-crown"></i> Gerenciar Admins
+                    </a>
+                    <button class="btn-logout" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Sair
+                    </button>
+                </div>
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <span class="stat-icon">👥</span>
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-label">Total de Clientes</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📦</span>
+                    <div class="stat-number" id="totalSubscriptions">0</div>
+                    <div class="stat-label">Assinaturas Ativas</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🎫</span>
+                    <div class="stat-number" id="totalTickets">0</div>
+                    <div class="stat-label">Tickets Abertos</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">💰</span>
+                    <div class="stat-number" id="totalRevenue">R$ 0</div>
+                    <div class="stat-label">Faturamento Total</div>
+                </div>
+            </div>
+
+            <!-- CLIENTES -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>👥 <span>Clientes</span></h3>
+                    <span class="count-badge" id="usersCount">0</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Nome</th><th>Email</th><th>Serviços Ativos</th><th>Status</th></tr></thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ASSINATURAS -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>📦 <span>Assinaturas</span></h3>
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                        <span class="count-badge" id="subscriptionsCount">0</span>
+                        <a href="../admin/assinaturas.html" class="btn-add"><i class="fas fa-plus"></i> Adicionar</a>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Serviço</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+                        <tbody id="subscriptionsTableBody">
+                            <tr><td colspan="5" style="text-align:center;color:#6a7a8a;padding:30px;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TICKETS -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>🎫 <span>Tickets</span></h3>
+                    <span class="count-badge" id="ticketsCount">0</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Cliente</th><th>Assunto</th><th>Prioridade</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
+                        <tbody id="ticketsTableBody">
+                            <tr><td colspan="6" style="text-align:center;color:#6a7a8a;padding:30px;"><i class="fas fa-spinner fa-spin"></i> Carregando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FEED -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h3>📈 <span>Últimas Atividades</span></h3>
+                    <span class="count-badge">Em tempo real</span>
+                </div>
+                <div class="feed-list" id="feedList">
+                    <div class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</div>
+                </div>
+            </div>
+
+            <a href="../dashboard/index.html" class="back-link"><i class="fas fa-arrow-left"></i> Voltar para o Dashboard do Cliente</a>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        // ============================================
+        // SUPABASE CONFIG
+        // ============================================
+        const SUPABASE_URL = "https://bdavgvwaxlokeoaichsw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_C1gh4XFD2148HjtSMzEEFg_2-A8S5IY";
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ============================================
+        // TOAST
+        // ============================================
+        const toast = document.getElementById('toast');
+        let toastTimeout;
+
+        function showToast(message, type = 'info') {
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // ============================================
+        // VERIFICAR SE É ADMIN (APENAS NO BANCO)
+        // ============================================
+        async function checkIsAdmin(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('admins')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .single();
+
+                if (error) throw error;
+                return data !== null;
+            } catch (error) {
+                console.log('❌ Erro ao verificar admin:', error);
+                return false;
+            }
+        }
+
+        // ============================================
+        // CARREGAR STATS
+        // ============================================
+        async function loadStats() {
+            try {
+                const { count: usersCount } = await supabaseClient
+                    .from('user_profiles')
+                    .select('*', { count: 'exact', head: true });
+
+                const { count: subsCount } = await supabaseClient
+                    .from('subscriptions')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'active');
+
+                const { count: ticketsCount } = await supabaseClient
+                    .from('tickets')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('status', 'open');
+
+                document.getElementById('totalUsers').textContent = usersCount || 0;
+                document.getElementById('totalSubscriptions').textContent = subsCount || 0;
+                document.getElementById('totalTickets').textContent = ticketsCount || 0;
+                document.getElementById('totalRevenue').textContent = `R$ ${((subsCount || 0) * 79.90).toFixed(2)}`;
+                document.getElementById('usersCount').textContent = usersCount || 0;
+                document.getElementById('subscriptionsCount').textContent = subsCount || 0;
+                document.getElementById('ticketsCount').textContent = ticketsCount || 0;
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar stats:', error);
+            }
+        }
+
+        // ============================================
+        // CARREGAR USUÁRIOS
+        // ============================================
+        async function loadUsers() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('user_profiles')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('usersTableBody');
+
+                if (!data || data.length === 0) {
+                    tbody.innerHTML =
+                        `<tr><td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;">
+                            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:10px;"></i>
+                            Nenhum cliente cadastrado
+                        </td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+
+                for (const user of data) {
+                    const { data: subs } = await supabaseClient
+                        .from('subscriptions')
+                        .select('service, status')
+                        .eq('user_id', user.id)
+                        .eq('status', 'active');
+
+                    const serviceNames = {
+                        hub: 'Hub',
+                        boost: 'Boost',
+                        shield: 'Shield',
+                        dev: 'Dev',
+                        optimizer: 'Optimizer'
+                    };
+
+                    let servicesHTML = '';
+                    if (subs && subs.length > 0) {
+                        servicesHTML = subs.map(s =>
+                            `<span class="service-tag">${serviceNames[s.service] || s.service}</span>`
+                        ).join(' ');
+                    } else {
+                        servicesHTML = '<span style="color:#6a7a8a;font-size:0.8rem;">Nenhum</span>';
+                    }
+
+                    const name = user.raw_user_meta_data?.full_name || 'Sem nome';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${name}</strong></td>
+                        <td><span class="email">${user.email}</span></td>
+                        <td>${servicesHTML}</td>
+                        <td><span class="status-badge active">✅ Ativo</span></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar usuários:', error);
+                document.getElementById('usersTableBody').innerHTML = `
+                    <tr><td colspan="4" style="text-align:center;color:#ff6b6b;padding:20px;">
+                        ❌ Erro ao carregar clientes: ${error.message}
+                    </td></tr>
+                `;
+            }
+        }
+
+        // ============================================
+        // FUNÇÕES DE AÇÃO - ASSINATURAS
+        // ============================================
+        window.toggleSubscription = async function(id, currentStatus) {
+            const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+            const action = newStatus === 'active' ? 'ativar' : 'desativar';
+
+            if (!confirm(`Deseja ${action} esta assinatura?`)) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('subscriptions')
+                    .update({ status: newStatus })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                await loadSubscriptions();
+                await loadStats();
+
+                showToast(`✅ Assinatura ${action}da com sucesso!`, 'success');
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao ${action}: ${error.message}`, 'error');
+            }
+        };
+
+        window.deleteSubscription = async function(id) {
+            if (!confirm('Tem certeza que deseja remover esta assinatura permanentemente?')) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('subscriptions')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                await loadSubscriptions();
+                await loadStats();
+
+                showToast('✅ Assinatura removida com sucesso!', 'success');
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao remover: ${error.message}`, 'error');
+            }
+        };
+
+        // ============================================
+        // FUNÇÕES DE AÇÃO - TICKETS
+        // ============================================
+        window.updateTicket = async function(id, status) {
+            const statusNames = {
+                'in-progress': 'em andamento',
+                'done': 'concluído',
+                'open': 'aberto'
+            };
+            const statusEmojis = {
+                'in-progress': '🟡',
+                'done': '🟢',
+                'open': '🔴'
+            };
+
+            if (!confirm(`Deseja marcar este ticket como ${statusNames[status] || status}?`)) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('tickets')
+                    .update({ status: status })
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                await loadTickets();
+                await loadStats();
+
+                showToast(`✅ Ticket ${statusEmojis[status]} ${statusNames[status] || status} com sucesso!`, 'success');
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao atualizar: ${error.message}`, 'error');
+            }
+        };
+
+        window.deleteTicket = async function(id) {
+            if (!confirm('Tem certeza que deseja remover este ticket permanentemente?')) return;
+
+            try {
+                const { error } = await supabaseClient
+                    .from('tickets')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                await loadTickets();
+                await loadStats();
+
+                showToast('✅ Ticket removido com sucesso!', 'success');
+            } catch (error) {
+                console.error('❌ Erro:', error);
+                showToast(`❌ Erro ao remover: ${error.message}`, 'error');
+            }
+        };
+
+        // ============================================
+        // CARREGAR ASSINATURAS
+        // ============================================
+        async function loadSubscriptions() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('subscriptions_with_users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('subscriptionsTableBody');
+
+                if (!data || data.length === 0) {
+                    tbody.innerHTML =
+                        `<tr><td colspan="5" style="text-align:center;color:#6a7a8a;padding:30px;">
+                            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:10px;"></i>
+                            Nenhuma assinatura encontrada
+                        </td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+
+                const statusMap = {
+                    'active': '✅ Ativo',
+                    'inactive': '❌ Inativo',
+                    'expired': '⏳ Expirado'
+                };
+
+                const serviceNames = {
+                    hub: 'Hub',
+                    boost: 'Boost',
+                    shield: 'Shield',
+                    dev: 'Dev',
+                    optimizer: 'Optimizer'
+                };
+
+                for (const sub of data) {
+                    const name = sub.user_name || 'Desconhecido';
+                    const email = sub.email || '';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <strong>${name}</strong>
+                            <br>
+                            <span class="email">${email}</span>
+                        </td>
+                        <td><strong>${serviceNames[sub.service] || sub.service}</strong></td>
+                        <td><span class="status-badge ${sub.status}">${statusMap[sub.status] || sub.status}</span></td>
+                        <td>${new Date(sub.purchased_at).toLocaleDateString()}</td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-sm ${sub.status === 'active' ? 'danger' : 'success'}" 
+                                        onclick="toggleSubscription('${sub.id}', '${sub.status}')">
+                                    ${sub.status === 'active' ? 'Desativar' : 'Ativar'}
+                                </button>
+                                <button class="btn-sm secondary" onclick="deleteSubscription('${sub.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar assinaturas:', error);
+                document.getElementById('subscriptionsTableBody').innerHTML = `
+                    <tr><td colspan="5" style="text-align:center;color:#ff6b6b;padding:20px;">
+                        ❌ Erro ao carregar assinaturas: ${error.message}
+                    </td></tr>
+                `;
+            }
+        }
+
+        // ============================================
+        // CARREGAR TICKETS
+        // ============================================
+        async function loadTickets() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('tickets_with_users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                const tbody = document.getElementById('ticketsTableBody');
+
+                if (!data || data.length === 0) {
+                    tbody.innerHTML =
+                        `<tr><td colspan="6" style="text-align:center;color:#6a7a8a;padding:30px;">
+                            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:10px;"></i>
+                            Nenhum ticket encontrado
+                        </td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+
+                const statusMap = {
+                    'open': '🔴 Aberto',
+                    'in-progress': '🟡 Em andamento',
+                    'done': '🟢 Concluído'
+                };
+
+                const priorityMap = {
+                    'low': '🟢 Baixa',
+                    'medium': '🟡 Média',
+                    'high': '🔴 Alta'
+                };
+
+                const priorityEmojis = {
+                    'low': '🟢',
+                    'medium': '🟡',
+                    'high': '🔴'
+                };
+
+                for (const ticket of data) {
+                    const name = ticket.user_name || 'Desconhecido';
+                    const email = ticket.email || '';
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <strong>${name}</strong>
+                            <br>
+                            <span class="email">${email}</span>
+                        </td>
+                        <td><strong>${ticket.title}</strong></td>
+                        <td>${priorityEmojis[ticket.priority] || '🟡'} ${priorityMap[ticket.priority] || 'Média'}</td>
+                        <td><span class="status-badge ${ticket.status}">${statusMap[ticket.status] || ticket.status}</span></td>
+                        <td>${new Date(ticket.created_at).toLocaleDateString()}</td>
+                        <td>
+                            <div class="actions-cell">
+                                ${ticket.status === 'open' ? 
+                                    `<button class="btn-sm warning" onclick="updateTicket('${ticket.id}', 'in-progress')">
+                                        <i class="fas fa-play"></i> Em andamento
+                                    </button>` : ''}
+                                ${ticket.status !== 'done' ? 
+                                    `<button class="btn-sm success" onclick="updateTicket('${ticket.id}', 'done')">
+                                        <i class="fas fa-check"></i> Concluir
+                                    </button>` : ''}
+                                <button class="btn-sm secondary" onclick="deleteTicket('${ticket.id}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                }
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar tickets:', error);
+                document.getElementById('ticketsTableBody').innerHTML = `
+                    <tr><td colspan="6" style="text-align:center;color:#ff6b6b;padding:20px;">
+                        ❌ Erro ao carregar tickets: ${error.message}
+                    </td></tr>
+                `;
+            }
+        }
+
+        // ============================================
+        // CARREGAR FEED
+        // ============================================
+        async function loadFeed() {
+            try {
+                const [ticketsRes, subsRes] = await Promise.all([
+                    supabaseClient.from('tickets_with_users')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(6),
+                    supabaseClient.from('subscriptions_with_users')
+                    .select('*')
+                    .order('created_at', { ascending: false })
+                    .limit(4)
+                ]);
+
+                const feed = document.getElementById('feedList');
+                const items = [];
+
+                const statusMap = {
+                    'open': 'abriu',
+                    'in-progress': 'atualizou',
+                    'done': 'fechou'
+                };
+
+                const serviceNames = {
+                    hub: 'Hub',
+                    boost: 'Boost',
+                    shield: 'Shield',
+                    dev: 'Dev',
+                    optimizer: 'Optimizer'
+                };
+
+                if (ticketsRes.data) {
+                    ticketsRes.data.forEach(t => {
+                        const name = t.user_name || 'Alguém';
+                        items.push({
+                            time: new Date(t.created_at),
+                            text: `<strong>${name}</strong> ${statusMap[t.status] || 'criou'} o ticket: "<strong>${t.title}</strong>"`,
+                            type: 'ticket',
+                            icon: '🎫',
+                            color: '#ff3b3b'
+                        });
+                    });
+                }
+
+                if (subsRes.data) {
+                    subsRes.data.forEach(s => {
+                        const name = s.user_name || 'Alguém';
+                        items.push({
+                            time: new Date(s.purchased_at),
+                            text: `<strong>${name}</strong> contratou o serviço <strong>${serviceNames[s.service] || s.service}</strong>`,
+                            type: 'subscription',
+                            icon: '📦',
+                            color: '#2ed573'
+                        });
+                    });
+                }
+
+                items.sort((a, b) => b.time - a.time);
+
+                if (items.length === 0) {
+                    feed.innerHTML =
+                        `<div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            Nenhuma atividade recente
+                        </div>`;
+                    return;
+                }
+
+                feed.innerHTML = '';
+
+                items.slice(0, 8).forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'feed-item';
+                    div.style.borderLeftColor = item.color || '#58a6ff';
+                    div.innerHTML = `
+                        <span class="feed-icon">${item.icon}</span>
+                        <span class="feed-time">${item.time.toLocaleDateString()}</span>
+                        <span class="feed-text">${item.text}</span>
+                        <span class="feed-time-full">${item.time.toLocaleTimeString()}</span>
+                    `;
+                    feed.appendChild(div);
+                });
+
+            } catch (error) {
+                console.error('❌ Erro ao carregar feed:', error);
+                document.getElementById('feedList').innerHTML =
+                    `<div class="empty-state">
+                        <i class="fas fa-exclamation-circle" style="color:#ff6b6b;"></i>
+                        Erro ao carregar atividades
+                    </div>`;
+            }
+        }
+
+        // ============================================
+        // VERIFICAR USUÁRIO (APENAS PARA ADMINS REAIS)
+        // ============================================
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (!session) {
+                window.location.href = '../login/index.html';
+                return;
+            }
+
+            const user = session.user;
+            console.log('👤 Usuário logado:', user.email);
+            console.log('🆔 User ID:', user.id);
+
+            // ============================================
+            // VERIFICAR ADMIN (APENAS NO BANCO)
+            // ============================================
+            const isAdmin = await checkIsAdmin(user.id);
+
+            if (!isAdmin) {
+                console.log('❌ Usuário NÃO é admin');
+                showToast('❌ Você não tem permissão para acessar esta página.', 'error');
+                setTimeout(() => {
+                    window.location.href = '../dashboard/index.html';
+                }, 1500);
+                return;
+            }
+
+            console.log('✅ Usuário admin logado:', user.email);
+
+            await loadStats();
+            await loadUsers();
+            await loadSubscriptions();
+            await loadTickets();
+            await loadFeed();
+        });
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = '../login/index.html';
+        });
+
+        // ============================================
+        // RECARREGAR AUTOMÁTICO
+        // ============================================
+        setInterval(async () => {
+            const user = await supabaseClient.auth.getUser();
+            if (user.data?.user) {
+                await loadStats();
+                await loadFeed();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

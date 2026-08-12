@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Serviços | ADVANNCE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="dashboard-page">
+        <div class="container">
+
+            <!-- HEADER -->
+            <header class="dashboard-header">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div>
+                        <div class="user-name" id="userName">Usuário</div>
+                        <div class="user-email" id="userEmail">email@email.com</div>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <a href="../index.html" class="btn-back-site"><i class="fas fa-home"></i> Site</a>
+                    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                </div>
+            </header>
+
+            <!-- NAVEGAÇÃO -->
+            <nav class="dashboard-nav">
+                <a href="index.html"><i class="fas fa-home"></i> Visão Geral</a>
+                <a href="perfil.html"><i class="fas fa-user"></i> Meus Dados</a>
+                <a href="servicos.html" class="active"><i class="fas fa-box"></i> Meus Serviços</a>
+                <a href="tickets.html"><i class="fas fa-ticket"></i> Tickets</a>
+                <a href="notificacoes.html"><i class="fas fa-bell"></i> Notificações</a>
+                <a href="relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+                <a href="bot.html"><i class="fas fa-robot"></i> Dashboard Bot</a>
+            </nav>
+
+            <!-- TÍTULO -->
+            <h2 class="section-title">📦 Meus <span>Serviços</span></h2>
+
+            <!-- SERVIÇOS CONTRATADOS -->
+            <div id="activeServices">
+                <h3 style="margin-bottom: 15px; color: #2ed573;">✅ Serviços Ativos</h3>
+                <div class="services-grid" id="activeServicesGrid">
+                    <!-- Será preenchido pelo JavaScript -->
+                </div>
+            </div>
+
+            <!-- SERVIÇOS DISPONÍVEIS -->
+            <div id="availableServices" style="margin-top: 40px;">
+                <h3 style="margin-bottom: 15px; color: #ff3b3b;">📩 Serviços Disponíveis</h3>
+                <div class="services-grid" id="availableServicesGrid">
+                    <!-- Será preenchido pelo JavaScript -->
+                </div>
+            </div>
+
+            <!-- ESTADO VAZIO (quando não tem serviços) -->
+            <div id="emptyState" style="display: none;">
+                <div class="empty-state">
+                    <span class="icon">📭</span>
+                    <h3>Você ainda não contratou nenhum serviço</h3>
+                    <p>Conheça nossas soluções e escolha a melhor para o seu projeto.</p>
+                    <a href="index.html#servicos" class="btn-primary-custom" style="display: inline-block; padding: 12px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; margin-top: 15px;">Ver Serviços</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ESTILOS ADICIONAIS -->
+    <style>
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 24px;
+        }
+
+        .empty-state .icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #9aa4b8;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-badge.active {
+            background: rgba(46,213,115,0.15);
+            color: #2ed573;
+        }
+
+        .status-badge.inactive {
+            background: rgba(255,59,59,0.15);
+            color: #ff6b6b;
+        }
+
+        .status-badge.pending {
+            background: rgba(255,193,7,0.15);
+            color: #ffc107;
+        }
+
+        .btn-download-service {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #2ed573, #26a65b);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-download-service:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46,213,115,0.3);
+            color: #fff;
+        }
+
+        .btn-contract-service {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid #ff3b3b;
+            color: #ff3b3b;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-contract-service:hover {
+            background: #ff3b3b;
+            color: #fff;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script>
+        const SUPABASE_URL = "https://bdavgvwaxlokeoaichsw.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_C1gh4XFD2148HjtSMzEEFg_2-A8S5IY";
+
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userAvatar = document.getElementById('userAvatar');
+
+        const activeServicesGrid = document.getElementById('activeServicesGrid');
+        const availableServicesGrid = document.getElementById('availableServicesGrid');
+        const emptyState = document.getElementById('emptyState');
+        const activeServicesSection = document.getElementById('activeServices');
+        const availableServicesSection = document.getElementById('availableServices');
+
+        // ============================================
+        // LISTA DE TODOS OS SERVIÇOS
+        // ============================================
+        const ALL_SERVICES = [
+            {
+                key: 'hub',
+                name: 'Advancce Hub',
+                icon: '🤖',
+                description: 'Bots inteligentes, moderação automatizada, sistema de tickets e logs avançados.'
+            },
+            {
+                key: 'shield',
+                name: 'Advancce Shield',
+                icon: '🛡️',
+                description: 'Proteção contra ameaças, monitoramento contínuo e segurança digital.'
+            },
+            {
+                key: 'dev',
+                name: 'Advancce Dev',
+                icon: '💻',
+                description: 'Desenvolvimento de sistemas sob medida, aplicações web e automações.'
+            },
+            {
+                key: 'optimizer',
+                name: 'Advancce Optimizer',
+                icon: '⚡',
+                description: 'Otimize seu computador com um clique. Melhore FPS e reduza latência.'
+            }
+        ];
+
+        // ============================================
+        // ATUALIZAR HEADER
+        // ============================================
+        function updateHeader(user) {
+            const name = user.user_metadata?.full_name || 'Usuário';
+            const email = user.email || 'email@email.com';
+            const initial = name.charAt(0).toUpperCase();
+
+            userName.textContent = name;
+            userEmail.textContent = email;
+            userAvatar.textContent = initial;
+        }
+
+        // ============================================
+        // CARREGAR SERVIÇOS DO USUÁRIO
+        // ============================================
+        async function loadUserServices(userId) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('subscriptions')
+                    .select('service, status')
+                    .eq('user_id', userId)
+                    .eq('status', 'active');
+
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('❌ Erro ao buscar serviços:', error);
+                return [];
+            }
+        }
+
+        // ============================================
+        // RENDERIZAR SERVIÇOS
+        // ============================================
+        function renderServices(activeServices) {
+            const activeKeys = activeServices.map(s => s.service);
+
+            // Limpar grids
+            activeServicesGrid.innerHTML = '';
+            availableServicesGrid.innerHTML = '';
+
+            // Separar serviços ativos e disponíveis
+            const activeList = ALL_SERVICES.filter(s => activeKeys.includes(s.key));
+            const availableList = ALL_SERVICES.filter(s => !activeKeys.includes(s.key));
+
+            // Mostrar/esconder seções
+            if (activeList.length === 0) {
+                activeServicesSection.style.display = 'none';
+            } else {
+                activeServicesSection.style.display = 'block';
+            }
+
+            if (availableList.length === 0) {
+                availableServicesSection.style.display = 'none';
+            } else {
+                availableServicesSection.style.display = 'block';
+            }
+
+            // Se não tem serviços ativos E não tem disponíveis
+            if (activeList.length === 0 && availableList.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            // Renderizar serviços ativos
+            activeList.forEach(service => {
+                const card = createServiceCard(service, true);
+                activeServicesGrid.appendChild(card);
+            });
+
+            // Renderizar serviços disponíveis
+            availableList.forEach(service => {
+                const card = createServiceCard(service, false);
+                availableServicesGrid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // CRIAR CARD DE SERVIÇO
+        // ============================================
+        function createServiceCard(service, isActive) {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+
+            // Estilo especial para serviços ativos
+            if (isActive) {
+                card.style.borderColor = 'rgba(46,213,115,0.3)';
+            }
+
+            card.innerHTML = `
+                <span class="icon">${service.icon}</span>
+                <h3>${service.name}</h3>
+                <p>${service.description}</p>
+                ${isActive ? `
+                    <span class="status-badge active">✅ Ativo</span>
+                    <a href="downloads/advancce-${service.key}/" class="btn-download-service">
+                        <i class="fas fa-download"></i> Acessar
+                    </a>
+                ` : `
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20${service.name}" target="_blank" class="btn-contract-service">
+                        <i class="fas fa-rocket"></i> Contratar Agora
+                    </a>
+                `}
+            `;
+
+            return card;
+        }
+
+        // ============================================
+        // VERIFICAR USUÁRIO
+        // ============================================
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            if (session) {
+                const user = session.user;
+                updateHeader(user);
+
+                // Buscar serviços do usuário
+                const activeServices = await loadUserServices(user.id);
+                console.log('📦 Serviços ativos:', activeServices);
+
+                // Renderizar
+                renderServices(activeServices);
+
+            } else {
+                window.location.href = '../login/index.html';
+            }
+        });
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = '../login/index.html';
+        });
+    </script>
+</body>
+</html>

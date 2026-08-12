@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advancce | Tecnologia & Performance</title>
 
-     <!-- FAVICON -->
+    <!-- FAVICON -->
     <link rel="icon" href="./img/logo.png" type="image/x-icon">
 
     <!-- Bootstrap -->
@@ -15,1063 +14,1592 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- CSS Personalizado -->
+    <style>
+        /* ==========================================
+           RESET & VARIÁVEIS
+           ========================================== */
+        :root {
+            --primary: #ff3b3b;
+            --primary-dark: #e03030;
+            --primary-light: #ff6b6b;
+            --bg: #0a0a0f;
+            --bg-2: #12121a;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.06);
+            --text: #e8edf5;
+            --text-muted: #9aa4b8;
+            --text-dark: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================
+           SCROLLBAR
+           ========================================== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ==========================================
+           NAVBAR
+           ========================================== */
+        .navbar {
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid transparent;
+            padding: 10px 0;
+            transition: all 0.4s ease;
+        }
+
+        .navbar-scrolled {
+            background: rgba(10, 10, 15, 0.96);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary) !important;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .navbar-logo {
+            height: 38px;
+            width: auto;
+            transition: transform 0.3s;
+        }
+
+        .navbar-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin: 0 6px;
+            padding: 6px 10px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 60%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        /* ==========================================
+           BOTÃO LOGIN NO MENU
+           ========================================== */
+        .btn-login-nav {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary) !important;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-login-nav:hover {
+            background: var(--primary);
+            color: #fff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 59, 59, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-login-nav i {
+            margin-right: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* ==========================================
+           BUTTONS
+           ========================================== */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            color: #fff;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 59, 59, 0.35);
+            color: #fff;
+        }
+
+        .btn-primary-custom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -120%;
+            width: 80px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-25deg);
+            transition: 0.6s;
+        }
+
+        .btn-primary-custom:hover::before {
+            left: 140%;
+        }
+
+        .btn-secondary-custom {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline-custom {
+            padding: 14px 28px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-outline-custom:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* ==========================================
+           HERO
+           ========================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: var(--primary);
+            filter: blur(200px);
+            opacity: 0.06;
+            top: -300px;
+            right: -200px;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: var(--primary);
+            filter: blur(150px);
+            opacity: 0.04;
+            bottom: -200px;
+            left: -100px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255, 59, 59, 0.12);
+            border: 1px solid rgba(255, 59, 59, 0.2);
+            color: var(--primary-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-title {
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin: 20px 0 30px;
+            max-width: 550px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .hero-stats strong {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .hero-stats span {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================
+           DASHBOARD
+           ========================================== */
+        .dashboard {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .dashboard-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .dashboard-dot.red { background: #ff5f56; }
+        .dashboard-dot.yellow { background: #ffbd2e; }
+        .dashboard-dot.green { background: #27c93f; }
+
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .dashboard-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .dashboard-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .dashboard-card span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .dashboard-card h2 {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        /* ==========================================
+           SECTIONS GERAIS
+           ========================================== */
+        .section-padding {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.15);
+            color: var(--primary-light);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+       .section-header h2 span {
+    background: linear-gradient(135deg, #ff3b3b, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        /* ==========================================
+           SERVICE / ECO CARDS
+           ========================================== */
+        .service-card,
+        .eco-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before,
+        .eco-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover::before,
+        .eco-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover,
+        .eco-card:hover {
+            border-color: rgba(255, 59, 59, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(255, 59, 59, 0.08);
+        }
+
+        .service-card .icon,
+        .eco-card .eco-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .service-card h4,
+        .eco-card h4 {
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .service-card p,
+        .eco-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+            flex: 1;
+        }
+
+        .service-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .service-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 59, 59, 0.3);
+            color: #fff;
+        }
+
+        .service-btn i {
+            font-size: 1rem;
+        }
+
+        /* ==========================================
+           METRICS
+           ========================================== */
+        .metrics-section {
+            padding: 60px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .metric-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .metric-number {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .metric-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        /* ==========================================
+           TESTIMONIALS
+           ========================================== */
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            height: 100%;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(255, 59, 59, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 59, 59, 0.06);
+        }
+
+        .testimonial-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .testimonial-top h5 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .testimonial-top span {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .testimonial-text {
+            color: var(--text-muted);
+            line-height: 1.8;
+            min-height: 80px;
+        }
+
+        .testimonial-stars {
+            color: #ffc107;
+            margin-top: 15px;
+        }
+
+        .testimonial-stars i {
+            margin-right: 3px;
+        }
+
+        /* ==========================================
+           CTA
+           ========================================== */
+        .cta-section {
+            padding: 100px 0;
+        }
+
+        .cta-box {
+            text-align: center;
+            padding: 70px 50px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, rgba(255, 59, 59, 0.06), rgba(255, 59, 59, 0.02));
+            border: 1px solid rgba(255, 59, 59, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(rgba(255, 59, 59, 0.08), transparent 70%);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(80px);
+            pointer-events: none;
+        }
+
+        .cta-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255, 59, 59, 0.1);
+            border: 1px solid rgba(255, 59, 59, 0.15);
+            color: var(--primary-light);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .cta-box h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .cta-box p {
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 30px;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ==========================================
+           CONTACT
+           ========================================== */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .contact-form,
+        .contact-info {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .contact-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 59, 59, 0.3);
+        }
+
+        .info-card {
+            padding: 20px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            border-color: rgba(255, 59, 59, 0.2);
+        }
+
+        .info-card i {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .info-card h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .info-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* ==========================================
+           COMMUNITY
+           ========================================== */
+        .community-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px 35px;
+            text-align: center;
+            height: 100%;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .community-card:hover {
+            border-color: rgba(255, 59, 59, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(255, 59, 59, 0.06);
+        }
+
+        .community-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .community-card h3 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .community-card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .community-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            padding: 14px 28px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: #fff;
+        }
+
+        .community-btn.discord-btn {
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.25);
+        }
+
+        .community-btn.discord-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(88, 101, 242, 0.35);
+            color: #fff;
+        }
+
+        .community-btn.whatsapp-btn {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.25);
+        }
+
+        .community-btn.whatsapp-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(37, 211, 102, 0.35);
+            color: #fff;
+        }
+
+        /* ==========================================
+           FOOTER
+           ========================================== */
+        .footer {
+            padding: 80px 0 30px;
+            background: #07070d;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .footer-description {
+            color: var(--text-muted);
+            line-height: 1.8;
+            max-width: 350px;
+            margin-top: 15px;
+        }
+
+        .footer h5 {
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-4px);
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        .footer-divider {
+            margin: 40px 0 25px;
+            border-color: var(--border);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-bottom p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--primary);
+        }
+
+        /* ==========================================
+           RESPONSIVO
+           ========================================== */
+        @media (max-width: 991px) {
+            .hero-title {
+                font-size: 3rem;
+            }
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 30px;
+            }
+            .dashboard {
+                margin-top: 50px;
+            }
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .btn-login-nav {
+                margin: 5px 0;
+                text-align: center;
+            }
+            .navbar-brand {
+                font-size: 1.3rem;
+            }
+            .navbar-logo {
+                height: 32px;
+            }
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 8px 0;
+            }
+            .btn-login-nav {
+                font-size: 0.85rem;
+                padding: 6px 16px;
+            }
+            .btn-primary-custom {
+                padding: 6px 16px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .section-header h2 {
+                font-size: 2.2rem;
+            }
+            .cta-box h2 {
+                font-size: 2rem;
+            }
+            .cta-box {
+                padding: 40px 20px;
+            }
+            .hero {
+                padding: 100px 0 60px;
+            }
+            .dashboard-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-description {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .hero-buttons a {
+                width: 100%;
+                text-align: center;
+            }
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+            .metric-number {
+                font-size: 2rem;
+            }
+            .contact-form,
+            .contact-info {
+                padding: 25px;
+            }
+            .community-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <!-- ==========================================
+    NAVBAR
+    ========================================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="navbar">
         <div class="container">
-
-           <a class="navbar-brand" href="#">
-    <img
-        src="./img/logo.png"
-        alt="Advancce"
-        class="navbar-logo"
-    >
-    </a>
-
+            <a class="navbar-brand" href="#">
+                <img src="./img/logo.png" alt="Advancce" class="navbar-logo">
+                Advancce
+            </a>
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="menu">
-
                 <ul class="navbar-nav ms-auto">
-
+                    <li class="nav-item"><a class="nav-link" href="#home">Início</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#servicos">Serviços</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+                    <!-- BOTÃO LOGIN -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#home">Início</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#servicos">Serviços</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#planos">Planos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="#faq">FAQ</a>
-                    </li>
-
-                    <li class="nav-item ms-lg-3">
-                        <a href="#contato" class="btn btn-primary-custom">
-                            Solicitar Orçamento
+                        <a class="nav-link btn-login-nav" href="login/index.html">
+                            <i class="fa-solid fa-lock"></i> Entrar
                         </a>
                     </li>
-
+                    <li class="nav-item ms-lg-1">
+                        <a href="cadastro/index.html" class="btn btn-primary-custom" style="padding: 5px 16px; font-size: 0.8rem; border-radius: 6px;">
+                            Criar Conta
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-1">
+                        <a href="#orcamento" class="btn btn-primary-custom" style="padding: 5px 16px; font-size: 0.8rem; border-radius: 6px;">
+                            Orçamento
+                        </a>
+                    </li>
                 </ul>
-
             </div>
-
         </div>
     </nav>
 
-    <!-- HERO -->
+    <!-- ==========================================
+    HERO
+    ========================================== -->
     <section id="home" class="hero">
-
         <div class="container">
-
             <div class="row align-items-center">
-
                 <div class="col-lg-6">
-
-                    <span class="hero-badge">
-                        🚀 Tecnologia • Automação • Performance
-                    </span>
-
+                    <span class="hero-badge">🚀 Tecnologia • Automação • Performance</span>
                     <h1 class="hero-title">
-                        O futuro da gestão digital começa na
-                        <span class="gradient-text">
-                            Advancce
-                        </span>
+                        O futuro da gestão digital começa na<br>
+                        <span class="gradient-text">Advancce</span>
                     </h1>
-
                     <p class="hero-description">
                         Desenvolvemos sistemas, automações, bots para Discord, soluções de segurança e otimização de desempenho, ajudando comunidades, equipes e empresas a crescer com mais tecnologia, eficiência e resultados.
                     </p>
-
                     <div class="hero-buttons">
-
-                        <a href="#planos" class="btn btn-primary-custom">
-                            Começar Agora
-                        </a>
-
-                        <a href="#servicos" class="btn btn-secondary-custom">
-                            Ver Soluções
-                        </a>
-
+                        <a href="#orcamento" class="btn btn-primary-custom">Começar Agora</a>
+                        <a href="#servicos" class="btn btn-secondary-custom">Ver Soluções</a>
                     </div>
-
                     <div class="hero-stats">
-
-                        <div>
-                            <strong>80+</strong>
-                            <span>Projetos</span>
-                        </div>
-
-                        <div>
-                            <strong>100+</strong>
-                            <span>Usuários</span>
-                        </div>
-
-                        <div>
-                            <strong>99.9%</strong>
-                            <span>Uptime</span>
-                        </div>
-
+                        <div><strong>80+</strong><span>Projetos</span></div>
+                        <div><strong>100+</strong><span>Usuários</span></div>
+                        <div><strong>99.9%</strong><span>Uptime</span></div>
                     </div>
-
                 </div>
-
                 <div class="col-lg-6">
-
                     <div class="dashboard">
-
                         <div class="dashboard-header">
-
                             <div class="dashboard-dot red"></div>
                             <div class="dashboard-dot yellow"></div>
                             <div class="dashboard-dot green"></div>
-
                         </div>
-
                         <div class="dashboard-content">
-
                             <div class="dashboard-card">
                                 <span>Bots Online</span>
                                 <h2>127</h2>
                             </div>
-
                             <div class="dashboard-card">
                                 <span>Servidores</span>
                                 <h2>450</h2>
                             </div>
-
                             <div class="dashboard-card">
                                 <span>Performance</span>
                                 <h2>98%</h2>
                             </div>
-
                             <div class="dashboard-card">
                                 <span>Tickets</span>
                                 <h2>12</h2>
                             </div>
-
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </section>
 
-    <!-- MÉTRICAS -->
+    <!-- ==========================================
+    MÉTRICAS
+    ========================================== -->
     <section class="metrics-section">
-
         <div class="container">
-
             <div class="row g-4">
-
-                <div class="col-md-3">
+                <div class="col-md-3 col-6">
                     <div class="metric-card">
-                        <h2 class="metric-number">500</h2>
+                        <h2 class="metric-number">500+</h2>
                         <p>Projetos Entregues</p>
                     </div>
                 </div>
-
-                <div class="col-md-3">
+                <div class="col-md-3 col-6">
                     <div class="metric-card">
-                        <h2 class="metric-number">10000</h2>
+                        <h2 class="metric-number">10K+</h2>
                         <p>Usuários Ativos</p>
                     </div>
                 </div>
-
-                <div class="col-md-3">
+                <div class="col-md-3 col-6">
                     <div class="metric-card">
-                        <h2 class="metric-number">99</h2>
+                        <h2 class="metric-number">99%</h2>
                         <p>Disponibilidade</p>
                     </div>
                 </div>
-
-                <div class="col-md-3">
+                <div class="col-md-3 col-6">
                     <div class="metric-card">
-                        <h2 class="metric-number">24</h2>
+                        <h2 class="metric-number">24/7</h2>
                         <p>Suporte</p>
                     </div>
                 </div>
-
             </div>
-
         </div>
-
     </section>
-    <section class="ecosystem-section">
 
-    <div class="container">
-
-        <div class="section-header">
-
-            <span class="section-badge">
-                ECOSSISTEMA ADVANCCE
-            </span>
-
-            <h2>
-                Soluções para cada necessidade
-            </h2>
-
-            <p class="eco-description">
-                Um conjunto de ferramentas criadas para impulsionar comunidades, jogadores, equipes e empresas.
-            </p>
-
-        </div>
-
-        <div class="row g-4">
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="eco-card">
-
-                    <div class="eco-icon">
-                        <i class="fa-solid fa-robot"></i>
+    <!-- ==========================================
+    ECOSSISTEMA / SERVIÇOS
+    ========================================== -->
+    <section id="servicos" class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">ECOSSISTEMA ADVANCCE</span>
+                <h2>Soluções para cada <span>necessidade</span></h2>
+                <p>Um conjunto de ferramentas criadas para impulsionar comunidades, jogadores, equipes e empresas.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="service-card">
+                        <span class="icon"><i class="fa-solid fa-robot"></i></span>
+                        <h4>Advancce Hub</h4>
+                        <p>Centralize sua comunidade com bots inteligentes, sistema de tickets, moderação automatizada, logs avançados e integrações que simplificam a gestão do seu servidor.</p>
+                        <a href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Hub" target="_blank" class="service-btn">
+                            Solicitar Orçamento
+                        </a>
                     </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="service-card">
+                        <span class="icon"><i class="fa-solid fa-gauge-high"></i></span>
+                        <h4>Advancce Boost</h4>
+                        <p>Extraia o máximo desempenho do seu computador com otimizações focadas em FPS, estabilidade, redução de latência e melhor experiência para jogos e aplicações.</p>
+                        <a href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Boost" target="_blank" class="service-btn">
+                            Solicitar Orçamento
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="service-card">
+                        <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+                        <h4>Advancce Shield</h4>
+                        <p>Proteja sua infraestrutura com soluções de monitoramento, análise de comportamento, prevenção de ameaças e recursos avançados de segurança digital.</p>
+                        <a href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Shield" target="_blank" class="service-btn">
+                            Solicitar Orçamento
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="service-card">
+                        <span class="icon"><i class="fa-solid fa-code"></i></span>
+                        <h4>Advancce Dev</h4>
+                        <p>Desenvolvimento de sistemas sob medida, aplicações web e desktop, automações e soluções tecnológicas adaptadas às necessidades do seu projeto.</p>
+                        <a href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Dev" target="_blank" class="service-btn">
+                            Solicitar Orçamento
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <h4>Advancce Hub</h4>
+    <!-- ==========================================
+    DEPOIMENTOS
+    ========================================== -->
+    <section id="depoimentos" class="section-padding" style="background: var(--bg-2);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fa-solid fa-comment"></i> DEPOIMENTOS</span>
+                <h2>Quem usa <span>aprova</span></h2>
+                <p>Veja o que nossos clientes dizem sobre a Advancce.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-top">
+                            <img src="https://i.pravatar.cc/100?img=12" class="testimonial-avatar">
+                            <div>
+                                <h5>João Silva</h5>
+                                <span>Dono de Comunidade</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">A Advancce transformou completamente nosso servidor Discord. Hoje temos automação, tickets e suporte profissional.</p>
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-top">
+                            <img src="https://i.pravatar.cc/100?img=15" class="testimonial-avatar">
+                            <div>
+                                <h5>Lucas Ferreira</h5>
+                                <span>Líder Competitivo</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">Contratamos a Advancce para organizar nossa comunidade. Os bots, tickets e automações economizaram horas de trabalho.</p>
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="testimonial-card">
+                        <div class="testimonial-top">
+                            <img src="https://i.pravatar.cc/100?img=22" class="testimonial-avatar">
+                            <div>
+                                <h5>Marcos Santos</h5>
+                                <span>Streamer</span>
+                            </div>
+                        </div>
+                        <p class="testimonial-text">O serviço de otimização elevou meu FPS e reduziu travamentos. Meu setup ficou muito mais estável para lives.</p>
+                        <div class="testimonial-stars">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <p class="eco-description">
-                       Centralize sua comunidade com bots inteligentes, sistema de tickets, moderação automatizada, logs avançados e integrações que simplificam a gestão do seu servidor.
-                    </p>
-                    
-                    <a
-                    href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Hub%20e%20gostaria%20de%20receber%20mais%20informações."
-                    target="_blank"
-                    class="service-btn"
-                    >
-                        Solicitar Orçamento
+    <!-- ==========================================
+    CTA / ORÇAMENTO
+    ========================================== -->
+    <section id="orcamento" class="cta-section">
+        <div class="container">
+            <div class="cta-box">
+                <span class="cta-badge">PROPOSTA PERSONALIZADA</span>
+                <h2>Seu projeto merece uma solução <span class="gradient-text">sob medida</span></h2>
+                <p>Cada comunidade, equipe ou empresa possui necessidades únicas. Entre em contato conosco e receba uma proposta personalizada para o seu projeto.</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/558594084279?text=Olá%20Advancce!%20Gostaria%20de%20solicitar%20um%20orçamento%20personalizado." target="_blank" class="btn btn-primary-custom">
+                        <i class="fa-brands fa-whatsapp"></i> Falar com Especialista
                     </a>
+                    <a href="#contato" class="btn btn-outline-custom">Ver mais</a>
                 </div>
-
             </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="eco-card">
-
-                    <div class="eco-icon">
-                        <i class="fa-solid fa-gauge-high"></i>
-                    </div>
-
-                    <h4>Advancce Boost</h4>
-
-                    <p class="eco-description">
-                           Extraia o máximo desempenho do seu computador com otimizações focadas em FPS,
-                             estabilidade, redução de latência e melhor experiência para jogos e aplicações.
-                    </p>
-
-                    <a
-                    href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Boost%20e%20gostaria%20de%20receber%20mais%20informações."
-                    target="_blank"
-                    class="service-btn"
-                    >
-                        Solicitar Orçamento
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="eco-card">
-
-                    <div class="eco-icon">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-
-                    <h4>Advancce Shield</h4>
-
-                    <p class="eco-description">
-                        Proteja sua infraestrutura com soluções de monitoramento, análise de comportamento, prevenção de ameaças e recursos avançados de segurança digital.
-                    </p>
-
-                    <a
-                    href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Shield%20e%20gostaria%20de%20receber%20mais%20informações."
-                    target="_blank"
-                    class="service-btn"
-                    >
-                        Solicitar Orçamento
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-3 col-md-6">
-
-                <div class="eco-card">
-
-                    <div class="eco-icon">
-                        <i class="fa-solid fa-code"></i>
-                    </div>
-
-                    <h4>Advancce Dev</h4>
-
-                    <p>
-                        Desenvolvimento de sistemas sob medida, aplicações web e desktop, automações e soluções tecnológicas adaptadas às necessidades do seu projeto.
-                    </p>
-
-                    <a
-                    href="https://wa.me/558594084279?text=Olá%20Advancce!%20Tenho%20interesse%20no%20Advancce%20Dev%20e%20gostaria%20de%20receber%20mais%20informações."
-                    target="_blank"
-                    class="service-btn"
-                    >
-                        Solicitar Orçamento
-                    </a>
- 
-                </div>
-
-            </div>
-
         </div>
+    </section>
 
-    </div>
-
-</section>
-
-
-<section class="testimonials-section" id="depoimentos">
-
-<div class="container">
-
-    <div class="section-title">
-
-        <span class="section-badge">
-            <i class="fa-solid fa-comment"></i>
-            DEPOIMENTOS
-        </span>
-
-        <h2>
-            Quem Usa
-            <span>Aprova</span>
-        </h2>
-
-        <p>
-            Veja o que nossos clientes dizem sobre a Advancce.
-        </p>
-
-    </div>
-
-    <div class="row g-4">
-
-        <!-- Card 1 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=12"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>João Silva</h5>
-
-                        <span>Dono de Comunidade</span>
-
+    <!-- ==========================================
+    CONTATO
+    ========================================== -->
+    <section id="contato" class="section-padding" style="background: var(--bg-2);">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">CONTATO</span>
+                <h2>Vamos conversar sobre seu <span>projeto</span></h2>
+                <p>Conte sua ideia, necessidade ou desafio. Nossa equipe está pronta para desenvolver a melhor solução para você.</p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input type="text" placeholder="Seu nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" placeholder="seu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="tel" placeholder="(85) 99999-9999">
+                        </div>
+                        <div class="form-group">
+                            <label>Serviço de Interesse</label>
+                            <select>
+                                <option>Advancce Hub</option>
+                                <option>Advancce Boost</option>
+                                <option>Advancce Shield</option>
+                                <option>Advancce Dev</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Mensagem</label>
+                            <textarea rows="5" placeholder="Descreva seu projeto..."></textarea>
+                        </div>
+                        <button type="submit" class="contact-btn">Enviar Mensagem</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <div class="info-card">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <h4>WhatsApp</h4>
+                        <p>(85) 9408-4279</p>
                     </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    A Advancce transformou completamente
-                    nosso servidor Discord. Hoje temos
-                    automação, tickets e suporte profissional.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Card 2 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=15"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>Lucas Ferreira</h5>
-
-                        <span>Líder Competitivo</span>
-
-                    </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    Contratamos a Advancce para organizar nossa comunidade.
-                    Os bots, tickets e automações economizaram horas de trabalho.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Card 3 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=22"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>Marcos Santos</h5>
-
-                        <span>Streamer</span>
-
-                    </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    O serviço de otimização elevou meu FPS e reduziu travamentos.
-                    Meu setup ficou muito mais estável para lives.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Card 4 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=28"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>Rafael Costa</h5>
-
-                        <span>Dono de Servidor</span>
-
-                    </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    A equipe entregou exatamente o que prometeu.
-                    Atendimento rápido, suporte eficiente e resultado excelente.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Card 5 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=33"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>Gustavo Almeida</h5>
-
-                        <span>Desenvolvedor</span>
-
-                    </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    Precisávamos de uma solução personalizada.
-                    A Advancce desenvolveu tudo sob medida e superou as expectativas.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- Card 6 -->
-
-        <div class="col-lg-4 col-md-6">
-
-            <div class="testimonial-card">
-
-                <div class="testimonial-top">
-
-                    <img
-                    src="https://i.pravatar.cc/100?img=45"
-                    class="testimonial-avatar">
-
-                    <div>
-
-                        <h5>Pedro Henrique</h5>
-
-                        <span>Empresário</span>
-
-                    </div>
-
-                </div>
-
-                <p class="testimonial-text">
-
-                    Desde que implementamos as soluções da Advancce,
-                    nossos processos ficaram mais rápidos, organizados
-                    e muito mais eficientes.
-
-                </p>
-
-                <div class="testimonial-stars">
-
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-                    <i class="fa-solid fa-star"></i>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-</section>
-
-    <section class="cta-section" id="orcamento">
-
-    <div class="container">
-
-        <div class="cta-box">
-
-            <span class="cta-badge">
-                PROPOSTA PERSONALIZADA
-            </span>
-
-            <h2>
-                Seu projeto merece uma solução sob medida
-            </h2>
-
-            <p>
-                Cada comunidade, equipe ou empresa possui necessidades únicas.
-                Entre em contato conosco e receba uma proposta personalizada
-                para o seu projeto.
-            </p>
-
-            <div class="cta-buttons">
-
-                <a
-                href="https://wa.me/558594084279?text=Olá%20Advancce!%20Gostaria%20de%20solicitar%20um%20orçamento%20personalizado."
-                target="_blank"
-                class="btn-primary-custom"
-                >
-                    Ver projetos
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section class="contact-section" id="contato">
-
-    <div class="container">
-
-        <div class="section-header">
-
-            <span class="section-badge">
-                CONTATO
-            </span>
-
-            <h2>
-                Vamos Conversar Sobre Seu Projeto
-            </h2>
-
-            <p>
-                Conte sua ideia, necessidade ou desafio. Nossa equipe está pronta para desenvolver a melhor solução para você.
-            </p>
-
-        </div>
-
-        <div class="contact-wrapper">
-
-            <!-- FORMULÁRIO -->
-
-            <div class="contact-form">
-
-                <form>
-
-                    <div class="form-group">
-                        <label>Nome</label>
-                        <input
-                            type="text"
-                            placeholder="Seu nome"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input
-                            type="email"
-                            placeholder="seu@email.com"
-                            required
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Telefone</label>
-                        <input
-                            type="tel"
-                            placeholder="(85) 99999-9999"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label>Serviço de Interesse</label>
-
-                        <select>
-
-                            <option>Advancce Hub</option>
-                            <option>Advancce Boost</option>
-                            <option>Advancce Shield</option>
-                            <option>Advancce Dev</option>
-                            <option>Outro</option>
-
-                        </select>
-
-                    </div>
-
-                    <div class="form-group">
-
-                        <label>Mensagem</label>
-
-                        <textarea
-                            rows="6"
-                            placeholder="Descreva seu projeto..."
-                        ></textarea>
-
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="contact-btn"
-                    >
-                        Contatar Agora
-                    </button>
-
-                </form>
-
-            </div>
-
-            <!-- INFORMAÇÕES -->
-
-            <div class="contact-info">
-
-                <div class="info-card">
-
-                    <i class="fa-brands fa-whatsapp"></i>
-
-                    <h4>WhatsApp</h4>
-
-                    <p>(85) 9408-4279</p>
-
-                </div>
-
-                <div class="info-card">
-
-                    <i class="fa-solid fa-envelope"></i>
-
-                    <h4>Email</h4>
-
-                    <p>contato@advancce.com</p>
-
-                </div>
-
-                <div class="info-card">
-
-                    <i class="fa-solid fa-clock"></i>
-
-                    <h4>Atendimento</h4>
-
-                    <p>Segunda à Sexta</p>
-                    <p>08:00 às 18:00</p>
-
-                </div>
-
-                <div class="info-card">
-
-                    <i class="fa-solid fa-headset"></i>
-
-                    <h4>Suporte</h4>
-
-                    <p>Atendimento rápido e personalizado para cada projeto.</p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-    <section class="community-section">
-
-    <div class="container">
-
-        <div class="community-header">
-
-            <span class="community-badge">
-                <i class="fa-solid fa-users"></i>
-                COMUNIDADE
-            </span>
-
-            <h2>
-                Junte-se à
-                <span>Elite</span>
-            </h2>
-
-            <p>
-                Conecte-se com outros jogadores e tenha suporte exclusivo.
-            </p>
-
-        </div>
-
-        <div class="row g-4">
-
-            <!-- Discord -->
-
-            <div class="col-lg-6">
-
-                <div class="community-card">
-
-                    <div class="community-icon discord">
-
-                        <i class="fab fa-discord"></i>
-
-                    </div>
-
-                    <h3>Discord Oficial</h3>
-
-                    <p>
-                        Comunidade ativa, suporte técnico,
-                        atualizações em primeira mão
-                        e interação com os membros.
-                    </p>
-
-                    <a href="https://discord.gg/aWDNqeAq" class="community-btn discord-btn">
-
-                        <i class="fab fa-discord"></i>
-
-                        Entrar no Discord
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- Whats -->
-
-            <div class="col-lg-6">
-
-                <div class="community-card">
-
-                    <div class="community-icon whatsapp">
-
-                        <i class="fab fa-whatsapp"></i>
-
-                    </div>
-
-                    <h3>Grupo VIP</h3>
-
-                    <p>
-                        Receba novidades, suporte
-                        prioritário e conteúdos exclusivos.
-                    </p>
-
-                    <a href="#" class="community-btn whatsapp-btn">
-
-                        <i class="fab fa-whatsapp"></i>
-
-                        Entrar no Grupo
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-    <footer class="footer">
-
-    <div class="container">
-
-        <div class="row gy-5">
-
-            <!-- Marca -->
-
-            <div class="col-lg-4">
-
-                <h3 class="footer-logo">
-                    ADVANCCE
-                </h3>
-
-                <p class="footer-description">
-
-                    Tecnologia, automação, performance e
-                    soluções digitais para comunidades,
-                    empresas e equipes competitivas.
-
-                </p>
-
-                <div class="footer-social">
-
-                    <a href="#">
-                        <i class="fab fa-discord"></i>
-                    </a>
-
-                    <a href="#">
-                        <i class="fab fa-github"></i>
-                    </a>
-
-                    <a href="#">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-
-                    <a href="#">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-
-                </div>
-
-            </div>
-
-        
-
-            <!-- Empresa -->
-
-            <div class="col-lg-2 col-md-6">
-
-                <h5>Empresa</h5>
-
-                <ul class="footer-links">
-
-                    <li>
-                        <a href="#home">Início</a>
-                    </li>
-
-                    <li>
-                        <a href="#servicos">Serviços</a>
-                    </li>
-
-                    <li>
-                        <a href="#planos">Planos</a>
-                    </li>
-
-                    <li>
-                        <a href="#faq">FAQ</a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-            <!-- Soluções -->
-
-            <div class="col-lg-3 col-md-6">
-
-                <h5>Soluções</h5>
-
-                <ul class="footer-links">
-
-                    <li>
-                        <a href="#">Advancce Hub</a>
-                    </li>
-
-                    <li>
-                        <a href="#">Advancce Boost</a>
-                    </li>
-
-                    <li>
-                        <a href="#">Advancce Shield</a>
-                    </li>
-
-                    <li>
-                        <a href="#">Advancce Dev</a>
-                    </li>
-
-                </ul>
-
-            </div>
-
-            <!-- Contato -->
-
-            <div class="col-lg-3">
-
-                <h5>Contato</h5>
-
-                <ul class="footer-contact">
-
-                    <li>
+                    <div class="info-card">
                         <i class="fa-solid fa-envelope"></i>
-                        contato@advancce.com
-                    </li>
-
-                    <li>
-                        <i class="fa-brands fa-discord"></i>
-                        discord.gg/advancce
-                    </li>
-
-                    <li>
+                        <h4>Email</h4>
+                        <p>contato@advancce.com</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fa-solid fa-clock"></i>
+                        <h4>Atendimento</h4>
+                        <p>Segunda à Sexta</p>
+                        <p>08:00 às 18:00</p>
+                    </div>
+                    <div class="info-card">
                         <i class="fa-solid fa-headset"></i>
-                        Suporte 24/7
-                    </li>
-
-                </ul>
-
+                        <h4>Suporte</h4>
+                        <p>Atendimento rápido e personalizado para cada projeto.</p>
+                    </div>
+                </div>
             </div>
-
         </div>
+    </section>
 
-        <hr class="footer-divider">
-
-        <div class="footer-bottom">
-
-            <p>
-                © 2026 Advancce. Todos os direitos reservados.
-            </p>
-
-            <div class="footer-bottom-links">
-
-                <a href="#">
-                    Política de Privacidade
-                </a>
-
-                <a href="#">
-                    Termos de Uso
-                </a>
-
+    <!-- ==========================================
+    COMUNIDADE
+    ========================================== -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge"><i class="fa-solid fa-users"></i> COMUNIDADE</span>
+                <h2>Junte-se à <span>elite</span></h2>
+                <p>Conecte-se com outros usuários e tenha suporte exclusivo.</p>
             </div>
-
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="community-card">
+                        <span class="community-icon"><i class="fab fa-discord" style="color: #5865F2;"></i></span>
+                        <h3>Discord Oficial</h3>
+                        <p>Comunidade ativa, suporte técnico, atualizações em primeira mão e interação com os membros.</p>
+                        <a href="https://discord.gg/aWDNqeAq" target="_blank" class="community-btn discord-btn">
+                            <i class="fab fa-discord"></i> Entrar no Discord
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="community-card">
+                        <span class="community-icon"><i class="fab fa-whatsapp" style="color: #25D366;"></i></span>
+                        <h3>Grupo VIP</h3>
+                        <p>Receba novidades, suporte prioritário e conteúdos exclusivos diretamente no WhatsApp.</p>
+                        <a href="#" class="community-btn whatsapp-btn">
+                            <i class="fab fa-whatsapp"></i> Entrar no Grupo
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-    </div>
+    <!-- ==========================================
+    FOOTER
+    ========================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row gy-5">
+                <div class="col-lg-4">
+                    <h3 class="footer-logo">ADVANCCE</h3>
+                    <p class="footer-description">Tecnologia, automação, performance e soluções digitais para comunidades, empresas e equipes competitivas.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5>Empresa</h5>
+                    <ul class="footer-links">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#depoimentos">Depoimentos</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5>Soluções</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Advancce Hub</a></li>
+                        <li><a href="#">Advancce Boost</a></li>
+                        <li><a href="#">Advancce Shield</a></li>
+                        <li><a href="#">Advancce Dev</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5>Contato</h5>
+                    <ul class="footer-contact">
+                        <li><i class="fa-solid fa-envelope"></i> contato@advancce.com</li>
+                        <li><i class="fa-brands fa-discord"></i> discord.gg/advancce</li>
+                        <li><i class="fa-solid fa-headset"></i> Suporte 24/7</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="footer-divider">
+            <div class="footer-bottom">
+                <p>© 2026 Advancce. Todos os direitos reservados.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Política de Privacidade</a>
+                    <a href="#">Termos de Uso</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
-</footer>
-
+    <!-- ==========================================
+    SCRIPTS
+    ========================================== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script>
+    <script>
+        // ============================================
+        // NAVBAR SCROLL
+        // ============================================
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+            }
+        });
 
+        // ============================================
+        // SMOOTH SCROLL
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // ============================================
+        // COUNTER ANIMATION
+        // ============================================
+        const counters = document.querySelectorAll('.metric-number');
+        const speed = 200;
+
+        const animateCounter = (counter) => {
+            const target = parseInt(counter.innerText.replace(/\D/g, ''));
+            let current = 0;
+            const increment = target / speed;
+
+            const update = () => {
+                current += increment;
+                if (current < target) {
+                    counter.innerText = Math.ceil(current) + '+';
+                    requestAnimationFrame(update);
+                } else {
+                    counter.innerText = target + '+';
+                }
+            };
+            update();
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => observer.observe(counter));
+
+        // ============================================
+        // DASHBOARD LIVE NUMBERS
+        // ============================================
+        setInterval(() => {
+            document.querySelectorAll('.dashboard-card h2').forEach(item => {
+                const current = parseInt(item.innerText);
+                if (!isNaN(current) && current < 999) {
+                    const variation = Math.floor(Math.random() * 5) + 1;
+                    item.innerText = current + variation;
+                }
+            });
+        }, 5000);
+
+        // ============================================
+        // FORM SUBMIT
+        // ============================================
+        document.getElementById('contactForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+            this.reset();
+        });
+    </script>
 </body>
-
 </html>
