@@ -3,18 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Bot | ADVANNCE</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #0a0a0f;
-            color: #e8edf5;
-        }
-        .dashboard-page { min-height: 100vh; padding: 100px 20px 60px; background: #0a0a0f; }
-        .container { max-width: 1000px; margin: 0 auto; }
+    <title>Dashboard Bot | AdvancceHub</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           RESET E VARIÁVEIS (Identidade AdvancceHub)
+        ========================================== */
+        :root {
+            --primary: #c8102e;
+            --primary-dark: #9e0b23;
+            --primary-light: #e11d48;
+            --primary-transparent: rgba(200, 16, 46, 0.1);
+            
+            --bg: #050505;
+            --bg-2: #0f0f11;
+            --bg-card: rgba(20, 20, 24, 0.6);
+            
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --metal-dark: #6b7280;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(200, 16, 46, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-page {
+            min-height: 100vh;
+            padding: 100px 20px 60px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           HEADER DO DASHBOARD
+        ========================================== */
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -22,119 +77,161 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
-            padding: 20px 30px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+            padding: 20px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
 
-        .user-info { display: flex; align-items: center; gap: 15px; }
-        .user-avatar {
-            width: 50px; height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff3b3b, #e03030);
+        .user-info {
             display: flex;
-            align-items: center; justify-content: center;
-            font-size: 1.5rem; font-weight: 700; color: #fff;
+            align-items: center;
+            gap: 15px;
         }
-        .user-name { font-weight: 700; font-size: 1.2rem; }
-        .user-email { color: #9aa4b8; font-size: 0.9rem; }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: var(--primary-transparent);
+            border: 1px solid var(--border-neon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .user-email {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
 
         .btn-logout {
-            padding: 10px 24px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.06);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
             background: transparent;
-            color: #e8edf5;
-            font-weight: 600;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
-        .btn-logout:hover { border-color: #ff3b3b; color: #ff3b3b; }
 
+        .btn-logout:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            background: var(--primary-transparent);
+        }
+
+        /* ==========================================
+           NAVEGAÇÃO
+        ========================================== */
         .dashboard-nav {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
             margin-bottom: 30px;
             padding: 10px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
 
         .dashboard-nav a {
-            padding: 10px 20px;
-            border-radius: 8px;
-            color: #9aa4b8;
+            padding: 10px 18px;
+            border-radius: 6px;
+            color: var(--text-muted);
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 8px;
+            border: 1px solid transparent;
         }
 
         .dashboard-nav a:hover {
-            background: rgba(255,255,255,0.04);
-            color: #e8edf5;
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
         }
 
         .dashboard-nav a.active {
-            background: rgba(255,59,59,0.12);
-            color: #ff3b3b;
-            border: 1px solid rgba(255,59,59,0.2);
+            background: var(--primary-transparent);
+            color: var(--primary-light);
+            border: 1px solid var(--border-neon);
         }
 
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .section-title span {
-            color: #ff3b3b;
-        }
-
+        /* ==========================================
+           STATUS DO BOT
+        ========================================== */
         .bot-status {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
-            padding: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 35px 25px;
             text-align: center;
             margin-bottom: 30px;
+            backdrop-filter: blur(10px);
         }
 
-        .bot-status .status-online {
-            display: inline-block;
-            padding: 8px 20px;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
             border-radius: 50px;
-            background: rgba(46,213,115,0.15);
-            color: #2ed573;
-            font-weight: 600;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .bot-status .status-offline {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            background: rgba(255,59,59,0.15);
-            color: #ff6b6b;
-            font-weight: 600;
+        .status-badge.offline {
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            color: #f87171;
         }
 
-        .bot-status .bot-name {
-            font-size: 2rem;
+        .status-badge.online {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        .bot-name {
+            font-size: 1.8rem;
             font-weight: 800;
-            margin: 15px 0 5px;
+            color: #fff;
+            margin: 20px 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
-        .bot-status .bot-id {
-            color: #6a7a8a;
-            font-size: 0.85rem;
+        .bot-id {
+            color: var(--metal-dark);
+            font-size: 0.8rem;
         }
 
+        /* ==========================================
+           ESTATÍSTICAS DO BOT
+        ========================================== */
         .bot-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -143,34 +240,56 @@
         }
 
         .stat-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 25px;
             text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(200, 16, 46, 0.3);
+            transform: translateY(-3px);
         }
 
         .stat-card .number {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
-            color: #ff3b3b;
+            color: var(--primary-light);
+            line-height: 1.1;
         }
 
         .stat-card .label {
-            color: #9aa4b8;
-            font-size: 0.85rem;
-            margin-top: 5px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            font-weight: 500;
         }
 
+        /* ==========================================
+           LISTA DE COMANDOS
+        ========================================== */
         .commands-list {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 25px;
+            backdrop-filter: blur(10px);
         }
 
         .commands-list h3 {
-            margin-bottom: 15px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .command-item {
@@ -178,7 +297,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
+            border-bottom: 1px solid var(--border);
         }
 
         .command-item:last-child {
@@ -187,46 +306,62 @@
 
         .command-item .cmd {
             font-family: monospace;
-            color: #ff3b3b;
-            font-weight: 600;
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 0.9rem;
+            background: rgba(200, 16, 46, 0.1);
+            padding: 4px 8px;
+            border-radius: 4px;
         }
 
         .command-item .usage {
-            color: #9aa4b8;
+            color: var(--text-muted);
             font-size: 0.85rem;
+            text-align: right;
         }
 
+        /* ==========================================
+           EMPTY STATE
+        ========================================== */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 24px;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px dashed var(--border-light);
+            border-radius: 8px;
         }
 
         .empty-state .icon {
-            font-size: 4rem;
+            font-size: 2.5rem;
             display: block;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            color: var(--metal-dark);
         }
 
         .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 8px;
         }
 
         .empty-state p {
-            color: #9aa4b8;
-            max-width: 500px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            max-width: 400px;
             margin: 0 auto;
         }
 
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
         @media (max-width: 768px) {
             .dashboard-header { flex-direction: column; text-align: center; }
             .user-info { flex-direction: column; }
             .dashboard-nav { flex-direction: column; }
             .dashboard-nav a { justify-content: center; }
             .bot-stats { grid-template-columns: 1fr 1fr; }
+            .command-item { flex-direction: column; align-items: flex-start; gap: 5px; }
+            .command-item .usage { text-align: left; }
         }
 
         @media (max-width: 480px) {
@@ -241,13 +376,15 @@
             <!-- HEADER -->
             <header class="dashboard-header">
                 <div class="user-info">
-                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-avatar" id="userAvatar">U</div>
                     <div>
                         <div class="user-name" id="userName">Usuário</div>
                         <div class="user-email" id="userEmail">email@email.com</div>
                     </div>
                 </div>
-                <button class="btn-logout" id="logoutBtn">Sair</button>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+                </button>
             </header>
 
             <!-- NAVEGAÇÃO -->
@@ -263,8 +400,12 @@
 
             <!-- STATUS DO BOT -->
             <div class="bot-status">
-                <span class="status-offline">🔴 Offline</span>
-                <div class="bot-name">🤖 Advancce Hub</div>
+                <span class="status-badge offline" id="botStatusBadge">
+                    <i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> Offline
+                </span>
+                <div class="bot-name">
+                    <i class="fa-solid fa-robot" style="color: var(--primary-light);"></i> Advancce Hub
+                </div>
                 <div class="bot-id">ID: hub-001 • Última atividade: nunca</div>
             </div>
 
@@ -290,12 +431,12 @@
 
             <!-- COMANDOS -->
             <div class="commands-list">
-                <h3>📋 Comandos Disponíveis</h3>
+                <h3><i class="fa-solid fa-terminal" style="color: var(--text-muted);"></i> Comandos Disponíveis</h3>
 
-                <div class="empty-state" style="padding: 30px 20px;">
-                    <span class="icon" style="font-size: 2.5rem;">🔌</span>
-                    <h3 style="font-size: 1.2rem;">Bot Offline</h3>
-                    <p style="font-size: 0.95rem;">Conecte o bot para ver os comandos disponíveis.</p>
+                <div class="empty-state" id="emptyState">
+                    <span class="icon"><i class="fa-solid fa-plug-circle-xmark"></i></span>
+                    <h3>Bot Offline</h3>
+                    <p>Conecte o bot para visualizar os comandos disponíveis e começar a usar.</p>
                 </div>
 
                 <!-- Comandos (aparecem quando o bot está online) -->
@@ -354,10 +495,13 @@
 
         // Simular status do bot
         const botOnline = false; // Mude para true quando o bot estiver online
+        
         if (botOnline) {
-            document.querySelector('.status-offline').className = 'status-online';
-            document.querySelector('.status-offline').textContent = '🟢 Online';
-            document.querySelector('.empty-state').style.display = 'none';
+            const badge = document.getElementById('botStatusBadge');
+            badge.className = 'status-badge online';
+            badge.innerHTML = '<i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> Online';
+            
+            document.getElementById('emptyState').style.display = 'none';
             document.getElementById('commandsList').style.display = 'block';
         }
     </script>

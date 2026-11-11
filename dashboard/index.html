@@ -3,9 +3,532 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | ADVANNCE</title>
+    <title>Dashboard | AdvancceHub</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           RESET E VARIÁVEIS (Identidade AdvancceHub)
+        ========================================== */
+        :root {
+            --primary: #c8102e;
+            --primary-dark: #9e0b23;
+            --primary-light: #e11d48;
+            --primary-transparent: rgba(200, 16, 46, 0.1);
+            
+            --bg: #050505;
+            --bg-2: #0f0f11;
+            --bg-card: rgba(20, 20, 24, 0.6);
+            
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --metal-dark: #6b7280;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(200, 16, 46, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-page {
+            min-height: 100vh;
+            padding: 100px 20px 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           HEADER DO DASHBOARD
+        ========================================== */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: var(--primary-transparent);
+            border: 1px solid var(--border-neon);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .user-email {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-header-action {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+
+        .btn-header-action:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            background: var(--primary-transparent);
+        }
+
+        /* ==========================================
+           NAVEGAÇÃO
+        ========================================== */
+        .dashboard-nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .dashboard-nav a {
+            padding: 10px 18px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+        }
+
+        .dashboard-nav a:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        .dashboard-nav a.active {
+            background: var(--primary-transparent);
+            color: var(--primary-light);
+            border: 1px solid var(--border-neon);
+        }
+
+        /* Link Admin */
+        .dashboard-nav a.admin-link {
+            color: var(--primary-light);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            margin-left: auto;
+            background: rgba(200, 16, 46, 0.05);
+        }
+
+        .dashboard-nav a.admin-link:hover {
+            background: var(--primary-transparent);
+            border-color: var(--primary-light);
+        }
+
+        /* ==========================================
+           BOAS-VINDAS
+        ========================================== */
+        .welcome-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 40px 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 60%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+        }
+
+        .welcome-section .icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .welcome-section h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section h1 span {
+            color: var(--primary-light);
+        }
+
+        .welcome-section p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 25px;
+        }
+
+        .welcome-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-custom {
+            background: var(--primary);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+            color: #fff;
+        }
+
+        .btn-secondary-custom {
+            background: transparent;
+            border: 1px solid var(--metal-dark);
+            color: var(--metal);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-secondary-custom:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            background: var(--primary-transparent);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           MÉTRICAS
+        ========================================== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .metric-card:hover {
+            border-color: rgba(200, 16, 46, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .metric-card .number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            line-height: 1.1;
+        }
+
+        .metric-card .label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* ==========================================
+           TÍTULO DE SEÇÃO
+        ========================================== */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title span {
+            color: var(--primary-light);
+        }
+
+        /* ==========================================
+           CARDS DE SERVIÇOS
+        ========================================== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .service-card:hover {
+            border-color: rgba(200, 16, 46, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .service-card .icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 20px;
+        }
+
+        .btn-contract {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 16px;
+            border-radius: 6px;
+            background: transparent;
+            border: 1px solid var(--primary-light);
+            color: var(--primary-light);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-contract:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        /* ==========================================
+           PREVIEW DE TICKETS
+        ========================================== */
+        .tickets-preview {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .tickets-preview .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tickets-preview .header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tickets-preview .header a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.3s;
+        }
+
+        .tickets-preview .header a:hover {
+            color: var(--primary);
+        }
+
+        .empty-tickets {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--metal-dark);
+        }
+
+        .empty-tickets i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .empty-tickets p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .empty-tickets span {
+            font-size: 0.8rem;
+        }
+
+        .empty-tickets span a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .empty-tickets span a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
+        @media (max-width: 768px) {
+            .dashboard-header { flex-direction: column; text-align: center; }
+            .user-info { flex-direction: column; }
+            .dashboard-nav { flex-direction: column; }
+            .dashboard-nav a { justify-content: center; }
+            .dashboard-nav a.admin-link { margin-left: 0; }
+            .welcome-section h1 { font-size: 1.4rem; }
+            .welcome-buttons { flex-direction: column; }
+            .welcome-buttons a { width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
     <div class="dashboard-page">
@@ -14,15 +537,19 @@
             <!-- HEADER -->
             <header class="dashboard-header">
                 <div class="user-info">
-                    <div class="user-avatar" id="userAvatar">👤</div>
+                    <div class="user-avatar" id="userAvatar">U</div>
                     <div>
                         <div class="user-name" id="userName">Usuário</div>
                         <div class="user-email" id="userEmail">email@email.com</div>
                     </div>
                 </div>
                 <div class="header-actions">
-                    <a href="../index.html" class="btn-back-site"><i class="fas fa-home"></i> Site</a>
-                    <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</button>
+                    <a href="../index.html" class="btn-header-action">
+                        <i class="fas fa-home"></i> Site
+                    </a>
+                    <button class="btn-header-action" id="logoutBtn">
+                        <i class="fas fa-arrow-right-from-bracket"></i> Sair
+                    </button>
                 </div>
             </header>
 
@@ -35,22 +562,23 @@
                 <a href="notificacoes.html"><i class="fas fa-bell"></i> Notificações</a>
                 <a href="relatorios.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
                 <a href="bot.html"><i class="fas fa-robot"></i> Dashboard Bot</a>
-                <!-- ADMIN LINK - SÓ APARECE PARA ADMINS (INICIALMENTE OCULTO) -->
-                <a href="../admin/admin.html" id="adminLink" style="display: none; color: #ff3b3b; font-weight: 600; border: 1px solid rgba(255,59,59,0.2); border-radius: 8px; padding: 8px 16px;">
-                    <i class="fas fa-shield-alt"></i> Admin
+                
+                <!-- ADMIN LINK -->
+                <a href="../admin/admin.html" id="adminLink" class="admin-link" style="display: none;">
+                    <i class="fas fa-shield-halved"></i> Admin
                 </a>
             </nav>
 
             <!-- BOAS-VINDAS -->
             <section class="welcome-section" id="welcomeSection">
-                <span class="icon" id="welcomeIcon">🚀</span>
+                <span class="icon" id="welcomeIcon"><i class="fa-solid fa-rocket" style="color: var(--primary-light);"></i></span>
                 <h1 id="welcomeTitle">Bem-vindo, <span id="welcomeName">Usuário</span>!</h1>
                 <p id="welcomeMessage">
-                    Você ainda não contratou nenhum serviço da ADVANNCE.
+                    Você ainda não contratou nenhum serviço da AdvancceHub.
                     <br>
                     Conheça nossas soluções e escolha a melhor para o seu projeto.
                 </p>
-                <div id="welcomeButtons" style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <div id="welcomeButtons" class="welcome-buttons">
                     <a href="#servicos" class="btn-primary-custom"><i class="fas fa-rocket"></i> Ver Serviços</a>
                     <a href="https://wa.me/558594084279" target="_blank" class="btn-secondary-custom"><i class="fab fa-whatsapp"></i> Falar com Especialista</a>
                 </div>
@@ -73,46 +601,62 @@
             </div>
 
             <!-- SERVIÇOS -->
-            <h2 class="section-title" id="servicos">💡 Conheça nossos <span>serviços</span></h2>
+            <h2 class="section-title" id="servicos">
+                <i class="fa-solid fa-lightbulb" style="color: var(--text-muted);"></i> 
+                Conheça nossos <span>serviços</span>
+            </h2>
+            
             <div class="services-grid" id="servicesGrid">
+                <!-- Advancce Hub -->
                 <div class="service-card">
-                    <span class="icon">🤖</span>
+                    <span class="icon"><i class="fa-solid fa-robot" style="color: var(--primary-light);"></i></span>
                     <h3>Advancce Hub</h3>
                     <p>Bots inteligentes, moderação automatizada, sistema de tickets e logs avançados.</p>
-                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Hub" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Hub" target="_blank" class="btn-contract">
+                        <i class="fas fa-rocket"></i> Contratar
+                    </a>
                 </div>
 
+                <!-- Advancce Shield -->
                 <div class="service-card">
-                    <span class="icon">🛡️</span>
+                    <span class="icon"><i class="fa-solid fa-shield-halved" style="color: var(--primary-light);"></i></span>
                     <h3>Advancce Shield</h3>
                     <p>Proteção contra ameaças, monitoramento contínuo, análise de comportamento e segurança digital.</p>
-                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Shield" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Shield" target="_blank" class="btn-contract">
+                        <i class="fas fa-rocket"></i> Contratar
+                    </a>
                 </div>
 
+                <!-- Advancce Dev -->
                 <div class="service-card">
-                    <span class="icon">💻</span>
+                    <span class="icon"><i class="fa-solid fa-code" style="color: var(--primary-light);"></i></span>
                     <h3>Advancce Dev</h3>
                     <p>Desenvolvimento de sistemas sob medida, aplicações web, desktop e automações.</p>
-                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Dev" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Dev" target="_blank" class="btn-contract">
+                        <i class="fas fa-rocket"></i> Contratar
+                    </a>
                 </div>
 
-                <div class="service-card optimizer-card">
-                    <span class="icon">⚡</span>
+                <!-- Advancce Optimizer -->
+                <div class="service-card">
+                    <span class="icon"><i class="fa-solid fa-bolt" style="color: var(--primary-light);"></i></span>
                     <h3>Advancce Optimizer</h3>
                     <p>Otimize seu computador com um clique. Melhore FPS, reduza latência e limpe arquivos desnecessários.</p>
-                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Optimizer" target="_blank" class="btn-contract"><i class="fas fa-rocket"></i> Contratar Agora</a>
+                    <a href="https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20Advancce%20Optimizer" target="_blank" class="btn-contract">
+                        <i class="fas fa-rocket"></i> Contratar
+                    </a>
                 </div>
             </div>
 
             <!-- TICKETS -->
             <div class="tickets-preview">
                 <div class="header">
-                    <h3><i class="fas fa-ticket-alt"></i> Últimos Tickets</h3>
+                    <h3><i class="fas fa-ticket" style="color: var(--text-muted);"></i> Últimos Tickets</h3>
                     <a href="tickets.html"><i class="fas fa-arrow-right"></i> Ver todos</a>
                 </div>
                 <div class="empty-tickets">
                     <i class="fas fa-inbox"></i>
-                    <p>Nenhum ticket aberto.</p>
+                    <p>Nenhum ticket aberto no momento.</p>
                     <span>Precisa de ajuda? <a href="tickets.html">Abra um ticket</a></span>
                 </div>
             </div>
@@ -135,7 +679,7 @@
         const adminLink = document.getElementById('adminLink');
 
         // ============================================
-        // VERIFICAR SE É ADMIN (APENAS NO BANCO)
+        // VERIFICAR SE É ADMIN
         // ============================================
         async function checkIsAdmin(userId) {
             try {
@@ -154,20 +698,15 @@
         }
 
         // ============================================
-        // MOSTRAR/ESCONDER LINK ADMIN (APENAS PARA ADMINS REAIS)
+        // MOSTRAR LINK ADMIN
         // ============================================
         async function showAdminLink(userId) {
-            // Verifica no banco de dados se o usuário é admin
             const isAdmin = await checkIsAdmin(userId);
             
             if (isAdmin) {
                 adminLink.style.display = 'flex';
-                adminLink.style.alignItems = 'center';
-                adminLink.style.gap = '6px';
-                console.log('✅ Link Admin visível para:', userId);
             } else {
                 adminLink.style.display = 'none';
-                console.log('❌ Link Admin oculto para:', userId);
             }
         }
 
@@ -193,7 +732,7 @@
         // ============================================
         // ATUALIZAR MENSAGEM DE BOAS-VINDAS
         // ============================================
-        function updateWelcomeMessage(subscriptions, userName) {
+        function updateWelcomeMessage(subscriptions, userNameStr) {
             const welcomeIcon = document.getElementById('welcomeIcon');
             const welcomeTitle = document.getElementById('welcomeTitle');
             const welcomeMessage = document.getElementById('welcomeMessage');
@@ -202,32 +741,28 @@
             if (subscriptions.length > 0) {
                 const serviceNames = subscriptions.map(s => {
                     const names = {
-                        'hub': 'Hub',
-                        'boost': 'Boost',
-                        'shield': 'Shield',
-                        'dev': 'Dev',
-                        'optimizer': 'Optimizer'
+                        'hub': 'Hub', 'boost': 'Boost', 'shield': 'Shield', 'dev': 'Dev', 'optimizer': 'Optimizer'
                     };
                     return names[s.service] || s.service;
                 }).join(', ');
 
-                welcomeIcon.textContent = '🎉';
-                welcomeTitle.innerHTML = `Bem-vindo de volta, <span>${userName}</span>!`;
+                welcomeIcon.innerHTML = '<i class="fa-solid fa-party-horn" style="color: var(--warning);"></i>';
+                welcomeTitle.innerHTML = `Bem-vindo de volta, <span>${userNameStr}</span>!`;
                 welcomeMessage.innerHTML = `
-                    Você já possui os seguintes serviços ativos: <strong>${serviceNames}</strong>.
+                    Você já possui os seguintes serviços ativos: <strong style="color: var(--primary-light);">${serviceNames}</strong>.
                     <br>
                     Acesse seus serviços abaixo ou conheça outras soluções.
                 `;
                 welcomeButtons.innerHTML = `
-                    <a href="#servicos" class="btn-primary-custom"><i class="fas fa-rocket"></i> Ver Meus Serviços</a>
+                    <a href="#servicos" class="btn-primary-custom"><i class="fas fa-box"></i> Ver Meus Serviços</a>
                     <a href="https://wa.me/558594084279" target="_blank" class="btn-secondary-custom"><i class="fab fa-whatsapp"></i> Suporte</a>
                 `;
                 totalServicos.textContent = subscriptions.length;
             } else {
-                welcomeIcon.textContent = '🚀';
-                welcomeTitle.innerHTML = `Bem-vindo, <span>${userName}</span>!`;
+                welcomeIcon.innerHTML = '<i class="fa-solid fa-rocket" style="color: var(--primary-light);"></i>';
+                welcomeTitle.innerHTML = `Bem-vindo, <span>${userNameStr}</span>!`;
                 welcomeMessage.innerHTML = `
-                    Você ainda não contratou nenhum serviço da ADVANNCE.
+                    Você ainda não contratou nenhum serviço da AdvancceHub.
                     <br>
                     Conheça nossas soluções e escolha a melhor para o seu projeto.
                 `;
@@ -263,18 +798,16 @@
                 if (!serviceKey) return;
 
                 if (activeServices.includes(serviceKey)) {
-                    link.textContent = '✅ Acessar';
+                    link.innerHTML = '<i class="fa-solid fa-circle-check"></i> Acessar';
                     link.href = `downloads/advancce-${serviceKey}/`;
-                    link.classList.add('btn-optimizer');
-                    link.style.borderColor = '#2ed573';
-                    link.style.color = '#2ed573';
+                    link.style.borderColor = 'var(--success)';
+                    link.style.color = 'var(--success)';
                 } else {
-                    link.textContent = '📩 Contratar Agora';
+                    link.innerHTML = '<i class="fas fa-rocket"></i> Contratar';
                     link.href = `https://wa.me/558594084279?text=Olá!%20Gostaria%20de%20contratar%20o%20${cardText}`;
                     link.target = '_blank';
-                    link.classList.remove('btn-optimizer');
-                    link.style.borderColor = '#ff3b3b';
-                    link.style.color = '#ff3b3b';
+                    link.style.borderColor = 'var(--primary-light)';
+                    link.style.color = 'var(--primary-light)';
                 }
             });
         }
@@ -298,14 +831,10 @@
                 localStorage.setItem('userEmail', email);
 
                 const subscriptions = await checkUserSubscriptions(user.id);
-                console.log('📦 Assinaturas ativas:', subscriptions);
 
                 updateWelcomeMessage(subscriptions, name);
                 updateServiceCards(subscriptions);
 
-                // ============================================
-                // VERIFICAR ADMIN E MOSTRAR LINK (APENAS PARA ADMINS REAIS)
-                // ============================================
                 await showAdminLink(user.id);
 
             } else {

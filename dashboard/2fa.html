@@ -3,60 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurar 2FA | Advancce</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Configurar 2FA | AdvancceHub</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="/img/logo.png" type="image/x-icon">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <style>
+        /* ==========================================
+           RESET E VARIÁVEIS (Identidade AdvancceHub)
+        ========================================== */
+        :root {
+            --primary: #c8102e;
+            --primary-dark: #9e0b23;
+            --primary-light: #e11d48;
+            --primary-transparent: rgba(200, 16, 46, 0.1);
+            
+            --bg: #050505;
+            --bg-2: #0f0f11;
+            --bg-card: rgba(20, 20, 24, 0.7);
+            
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --metal-dark: #6b7280;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            
+            --font: 'Inter', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(200, 16, 46, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
         .config-page {
             min-height: 100vh;
-            padding: 120px 20px 60px;
-            background: var(--bg);
+            padding: 100px 20px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .config-box {
             max-width: 600px;
-            margin: 0 auto;
+            width: 100%;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 12px;
             padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            animation: fadeUp 0.5s ease-out;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .config-box h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
             margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-box h2 i {
+            color: var(--primary-light);
         }
 
         .config-box p {
             color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
             margin-bottom: 25px;
         }
 
-        .qr-container {
+        /* ==========================================
+           ALERTAS (STATUS)
+        ========================================== */
+        .alert {
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
             display: flex;
-            justify-content: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #fff;
-            border-radius: 16px;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s;
         }
 
-        .qr-container img {
-            width: 200px;
-            height: 200px;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .secret-box {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            margin: 15px 0;
-            font-family: monospace;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            color: var(--primary);
-            user-select: all;
-            cursor: pointer;
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #34d399;
+        }
+
+        .alert-danger {
+            background: rgba(200, 16, 46, 0.1);
+            border: 1px solid rgba(200, 16, 46, 0.3);
+            color: #f87171;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #60a5fa;
+        }
+
+        /* ==========================================
+           PASSOS (STEP LIST)
+        ========================================== */
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 20px;
+            margin-bottom: 15px;
         }
 
         .step-list {
@@ -66,200 +160,261 @@
         }
 
         .step-list li {
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .step-list li:last-child {
+            border-bottom: none;
         }
 
         .step-list li .step-number {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
+            background: var(--primary-transparent);
+            border: 1px solid var(--border-neon);
+            color: var(--primary-light);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             flex-shrink: 0;
         }
 
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        .step-list li strong {
             color: #fff;
-            border: none;
-            padding: 14px 28px;
+        }
+
+        /* ==========================================
+           QR CODE E SECRET
+        ========================================== */
+        .qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: #fff;
             border-radius: 12px;
-            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .qr-container img {
+            width: 180px;
+            height: 180px;
+            display: block;
+        }
+
+        .secret-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed var(--metal-dark);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            color: var(--primary-light);
+            user-select: all;
             cursor: pointer;
-            width: 100%;
             transition: all 0.3s;
         }
 
-        .btn-primary-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(255, 59, 59, 0.3);
+        .secret-box:hover {
+            border-color: var(--primary-light);
+            background: rgba(0, 0, 0, 0.6);
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, #666, #444);
-        }
-
+        /* ==========================================
+           INPUT DE CÓDIGO
+        ========================================== */
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group input {
             width: 100%;
             padding: 14px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
             color: var(--text);
+            font-family: var(--font);
             font-size: 1.5rem;
             text-align: center;
-            letter-spacing: 6px;
+            letter-spacing: 8px;
             outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input::placeholder {
+            color: var(--metal-dark);
+            letter-spacing: normal;
+            font-size: 1rem;
         }
 
         .form-group input:focus {
             border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 3px var(--primary-transparent);
         }
 
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-
-        .alert-success {
-            background: rgba(46, 213, 115, 0.1);
-            border: 1px solid rgba(46, 213, 115, 0.2);
-            color: #2ed573;
-        }
-
-        .alert-danger {
-            background: rgba(255, 59, 59, 0.1);
-            border: 1px solid rgba(255, 59, 59, 0.2);
-            color: var(--primary-light);
-        }
-
-        .alert-info {
-            background: rgba(88, 166, 255, 0.1);
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            color: #58a6ff;
-        }
-
-        .hidden { display: none; }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 50px;
-            font-size: 0.8rem;
+        /* ==========================================
+           BOTÕES
+        ========================================== */
+        .btn-primary-custom {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: var(--font);
             font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .status-badge.active {
-            background: rgba(46, 213, 115, 0.15);
-            color: #2ed573;
-            border: 1px solid rgba(46, 213, 115, 0.2);
+        .btn-primary-custom:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
         }
 
-        .status-badge.inactive {
-            background: rgba(255, 59, 59, 0.1);
+        .btn-danger {
+            background: transparent;
+            border: 1px solid rgba(200, 16, 46, 0.3);
             color: var(--primary-light);
-            border: 1px solid rgba(255, 59, 59, 0.2);
+        }
+
+        .btn-danger:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+        }
+
+        /* ==========================================
+           DIVISOR E LINK DE VOLTAR
+        ========================================== */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 25px 0;
         }
 
         .back-home {
-            display: inline-block;
-            margin-top: 20px;
-            color: var(--text-muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 25px;
+            color: var(--metal-dark);
             text-decoration: none;
+            font-size: 0.8rem;
             transition: color 0.3s;
         }
 
         .back-home:hover {
-            color: var(--primary);
+            color: var(--primary-light);
         }
 
+        .hidden { display: none !important; }
+
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
         @media (max-width: 480px) {
-            .config-box { padding: 25px; }
+            .config-box { padding: 25px 20px; }
             .qr-container img { width: 150px; height: 150px; }
-            .form-group input { font-size: 1.2rem; }
+            .form-group input { font-size: 1.2rem; letter-spacing: 5px; }
         }
     </style>
 </head>
 <body>
     <div class="config-page">
-        <div class="container">
-            <div class="config-box">
-                <h2>🔐 Autenticação de Dois Fatores</h2>
-                <p>Proteja sua conta com uma camada extra de segurança.</p>
+        <div class="config-box">
+            <h2><i class="fa-solid fa-shield-halved"></i> Autenticação de Dois Fatores</h2>
+            <p>Proteja sua conta com uma camada extra de segurança.</p>
 
-                <!-- Status -->
-                <div id="statusContainer">
-                    <div id="statusEnabled" class="alert alert-success" style="display: none;">
-                        ✅ <strong>2FA ATIVADO</strong> — Sua conta está protegida com o Google Authenticator.
-                    </div>
-                    <div id="statusDisabled" class="alert alert-danger">
-                        ⚠️ <strong>2FA DESATIVADO</strong> — Ative para maior segurança.
-                    </div>
+            <!-- Status -->
+            <div id="statusContainer">
+                <div id="statusEnabled" class="alert alert-success" style="display: none;">
+                    <i class="fa-solid fa-circle-check"></i> <strong>2FA ATIVADO</strong> — Sua conta está protegida com o Google Authenticator.
+                </div>
+                <div id="statusDisabled" class="alert alert-danger">
+                    <i class="fa-solid fa-triangle-exclamation"></i> <strong>2FA DESATIVADO</strong> — Ative para maior segurança.
+                </div>
+            </div>
+
+            <!-- Configuração -->
+            <div id="setupContainer">
+                <h4><i class="fa-solid fa-mobile-screen" style="color: var(--text-muted); margin-right: 5px;"></i> Configurar Google Authenticator</h4>
+                <p style="font-size: 0.85rem;">Siga os passos abaixo para ativar o 2FA.</p>
+
+                <ol class="step-list">
+                    <li>
+                        <span class="step-number">1</span>
+                        <span class="step-text">Baixe o <strong>Google Authenticator</strong> na App Store ou Google Play</span>
+                    </li>
+                    <li>
+                        <span class="step-number">2</span>
+                        <span class="step-text">Escaneie o <strong>QR Code</strong> abaixo com o app</span>
+                    </li>
+                    <li>
+                        <span class="step-number">3</span>
+                        <span class="step-text">Digite o <strong>código de 6 dígitos</strong> gerado pelo app</span>
+                    </li>
+                </ol>
+
+                <div class="qr-container">
+                    <img id="qrCode" src="" alt="QR Code para 2FA">
                 </div>
 
-                <!-- Configuração -->
-                <div id="setupContainer">
-                    <h4 style="margin-top: 20px;">📱 Configurar Google Authenticator</h4>
-                    <p style="font-size: 0.9rem;">Siga os passos abaixo para ativar o 2FA.</p>
-
-                    <ol class="step-list">
-                        <li>
-                            <span class="step-number">1</span>
-                            <span class="step-text">Baixe o <strong>Google Authenticator</strong> na App Store ou Google Play</span>
-                        </li>
-                        <li>
-                            <span class="step-number">2</span>
-                            <span class="step-text">Escaneie o <strong>QR Code</strong> abaixo com o app</span>
-                        </li>
-                        <li>
-                            <span class="step-number">3</span>
-                            <span class="step-text">Digite o <strong>código de 6 dígitos</strong> gerado pelo app</span>
-                        </li>
-                    </ol>
-
-                    <div class="qr-container">
-                        <img id="qrCode" src="" alt="QR Code para 2FA">
-                    </div>
-
-                    <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">
-                        Ou digite manualmente o código:
-                    </p>
-                    <div class="secret-box" id="secretCode" onclick="copySecret()">
-                        Carregando...
-                    </div>
-
-                    <div class="form-group">
-                        <input type="text" id="codeInput" maxlength="6" placeholder="000000" autofocus>
-                    </div>
-
-                    <div id="alertMessage" class="alert hidden"></div>
-
-                    <button class="btn-primary-custom" id="verifyBtn">✅ Verificar e Ativar 2FA</button>
+                <p style="text-align: center; font-size: 0.8rem; color: var(--metal-dark); margin-bottom: 5px;">
+                    Ou digite manualmente o código:
+                </p>
+                <div class="secret-box" id="secretCode" onclick="copySecret()" title="Clique para copiar">
+                    Carregando...
                 </div>
 
-                <!-- Desativar -->
-                <div id="disableContainer" style="display: none; margin-top: 20px;">
-                    <hr style="border-color: var(--border); margin: 20px 0;">
-                    <button class="btn-primary-custom btn-danger" id="disableBtn">🔓 Desativar 2FA</button>
+                <div class="form-group">
+                    <input type="text" id="codeInput" maxlength="6" placeholder="000000" autofocus inputmode="numeric" pattern="[0-9]*">
                 </div>
 
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="/Advancce/dashboard/" class="back-home">← Voltar para o Dashboard</a>
-                </div>
+                <div id="alertMessage" class="alert hidden"></div>
+
+                <button class="btn-primary-custom" id="verifyBtn">
+                    <i class="fa-solid fa-check"></i> Verificar e Ativar 2FA
+                </button>
+            </div>
+
+            <!-- Desativar -->
+            <div id="disableContainer" style="display: none;">
+                <hr>
+                <button class="btn-primary-custom btn-danger" id="disableBtn">
+                    <i class="fa-solid fa-lock-open"></i> Desativar 2FA
+                </button>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/Advancce/dashboard/" class="back-home">
+                    <i class="fa-solid fa-arrow-left"></i> Voltar para o Dashboard
+                </a>
             </div>
         </div>
     </div>
@@ -316,13 +471,13 @@
             const has2FA = enrolledFactors.some(f => f.factorId === 'totp');
 
             if (has2FA) {
-                statusEnabled.style.display = 'block';
+                statusEnabled.style.display = 'flex';
                 statusDisabled.style.display = 'none';
                 setupContainer.style.display = 'none';
                 disableContainer.style.display = 'block';
             } else {
                 statusEnabled.style.display = 'none';
-                statusDisabled.style.display = 'block';
+                statusDisabled.style.display = 'flex';
                 setupContainer.style.display = 'block';
                 disableContainer.style.display = 'none';
                 generateQRCode();
@@ -358,7 +513,7 @@
             if (text) {
                 navigator.clipboard.writeText(text).then(() => {
                     const original = secretCode.textContent;
-                    secretCode.textContent = '✅ Copiado!';
+                    secretCode.innerHTML = '<i class="fa-solid fa-check"></i> Copiado!';
                     setTimeout(() => { secretCode.textContent = original; }, 2000);
                 });
             }
@@ -375,6 +530,11 @@
                 return;
             }
 
+            // Loading no botão
+            const originalBtnHtml = verifyBtn.innerHTML;
+            verifyBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verificando...';
+            verifyBtn.disabled = true;
+
             try {
                 const multiFactorAssertion = firebase.auth.TOTPMultiFactorGenerator.assertionForEnrollment(
                     pendingCredential.secret,
@@ -382,11 +542,13 @@
                 );
 
                 await currentUser.multiFactor.enroll(multiFactorAssertion, 'Google Authenticator');
-                showAlert('✅ 2FA ativado com sucesso!', 'success');
+                showAlert('2FA ativado com sucesso!', 'success');
                 setTimeout(() => window.location.reload(), 2000);
 
             } catch (error) {
                 showAlert('Código inválido. Tente novamente.', 'danger');
+                verifyBtn.innerHTML = originalBtnHtml;
+                verifyBtn.disabled = false;
             }
         });
 
@@ -394,7 +556,11 @@
         // DESATIVAR 2FA
         // ============================================
         disableBtn.addEventListener('click', async () => {
-            if (!confirm('Tem certeza que deseja desativar o 2FA?')) return;
+            if (!confirm('Tem certeza que deseja desativar o 2FA? Sua conta ficará menos segura.')) return;
+
+            const originalBtnHtml = disableBtn.innerHTML;
+            disableBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Desativando...';
+            disableBtn.disabled = true;
 
             try {
                 const enrolledFactors = currentUser.multiFactor.enrolledFactors || [];
@@ -404,11 +570,13 @@
                     await currentUser.multiFactor.unenroll(factor);
                 }
 
-                showAlert('✅ 2FA desativado com sucesso!', 'success');
+                showAlert('2FA desativado com sucesso!', 'success');
                 setTimeout(() => window.location.reload(), 2000);
 
             } catch (error) {
                 showAlert('Erro ao desativar 2FA.', 'danger');
+                disableBtn.innerHTML = originalBtnHtml;
+                disableBtn.disabled = false;
             }
         });
 
@@ -423,10 +591,17 @@
         // FUNÇÕES AUXILIARES
         // ============================================
         function showAlert(message, type) {
-            alertMessage.textContent = message;
+            let icon = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : 
+                       type === 'danger' ? '<i class="fa-solid fa-circle-exclamation"></i>' : 
+                       '<i class="fa-solid fa-circle-info"></i>';
+            
+            alertMessage.innerHTML = `${icon} <span>${message}</span>`;
             alertMessage.className = `alert alert-${type}`;
             alertMessage.classList.remove('hidden');
-            setTimeout(() => alertMessage.classList.add('hidden'), 5000);
+            
+            setTimeout(() => {
+                alertMessage.classList.add('hidden');
+            }, 5000);
         }
     </script>
 </body>

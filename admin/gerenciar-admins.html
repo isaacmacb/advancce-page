@@ -3,22 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciar Admins | ADVANNCE</title>
+    <title>Gerenciar Admins | AdvancceHub</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
+
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
     <style>
         /* ==========================================
-           RESET E BASE
+           RESET E VARIÁVEIS (Identidade AdvancceHub)
         ========================================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #0a0a0f;
-            color: #e8edf5;
-            min-height: 100vh;
+        :root {
+            --primary: #c8102e;
+            --primary-dark: #9e0b23;
+            --primary-light: #e11d48;
+            --primary-transparent: rgba(200, 16, 46, 0.1);
+            
+            --bg: #050505;
+            --bg-2: #0f0f11;
+            --bg-card: rgba(20, 20, 24, 0.6);
+            
+            --border: rgba(255, 255, 255, 0.08);
+            --border-light: rgba(255, 255, 255, 0.15);
+            
+            --text: #f3f4f6;
+            --text-muted: #9ca3af;
+            --metal-dark: #6b7280;
+            
+            --success: #10b981;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            
+            --font: 'Inter', sans-serif;
         }
-        .admin-page { min-height: 100vh; padding: 100px 20px 60px; background: #0a0a0f; }
-        .container { max-width: 1100px; margin: 0 auto; }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(200, 16, 46, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .admin-page {
+            min-height: 100vh;
+            padding: 100px 20px 60px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================
+           HEADER ADMIN
+        ========================================== */
         .admin-header {
             display: flex;
             justify-content: space-between;
@@ -26,185 +77,377 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 30px;
-            padding: 20px 30px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+            padding: 25px 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
         }
-        .admin-header .title { font-size: 1.8rem; font-weight: 800; }
-        .admin-header .title span { color: #ff3b3b; }
-        .admin-header .badge {
-            padding: 6px 18px;
-            border-radius: 50px;
-            background: rgba(255,59,59,0.15);
-            color: #ff6b6b;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid rgba(255,59,59,0.2);
+
+        .admin-header .title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .btn-logout {
-            padding: 8px 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(255,255,255,0.06);
-            background: transparent;
-            color: #e8edf5;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-logout:hover { border-color: #ff3b3b; color: #ff3b3b; }
-        .btn-back {
-            color: #9aa4b8;
-            text-decoration: none;
+
+        .admin-header .title span { color: var(--primary-light); }
+
+        .admin-header .subtitle {
+            color: var(--text-muted);
             font-size: 0.85rem;
-            padding: 8px 16px;
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 8px;
-            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .admin-header .badge {
+            padding: 6px 14px;
+            border-radius: 6px;
+            background: var(--primary-transparent);
+            color: var(--primary-light);
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid var(--border-neon);
             display: inline-flex;
             align-items: center;
             gap: 6px;
         }
-        .btn-back:hover { border-color: #ff3b3b; color: #ff3b3b; }
-        .header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Botões do Header */
+        .btn-header {
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+        }
+
+        .btn-header:hover {
+            border-color: var(--primary-light);
+            color: var(--primary-light);
+            background: var(--primary-transparent);
+        }
+
+        .btn-header.danger {
+            border-color: rgba(200, 16, 46, 0.3);
+            color: var(--primary-light);
+            background: var(--primary-transparent);
+        }
+
+        .btn-header.danger:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        /* ==========================================
+           SECTION CARDS
+        ========================================== */
         .section-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 25px;
             margin-bottom: 30px;
+            backdrop-filter: blur(10px);
         }
+
         .section-card .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-card .section-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #fff;
+        }
+
+        .section-card .section-header h3 span {
+            color: var(--primary-light);
+        }
+
+        .count-badge {
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================
+           FORMULÁRIO
+        ========================================== */
+        .form-group {
             margin-bottom: 15px;
         }
-        .section-card .section-header h3 { font-size: 1.2rem; font-weight: 700; }
-        .section-card .section-header h3 span { color: #ff3b3b; }
 
-        .form-group { margin-bottom: 15px; }
         .form-group label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #e8edf5;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i.input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--metal-dark);
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.06);
-            color: #e8edf5;
-            font-size: 0.95rem;
+            padding: 12px 16px 12px 40px;
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: 0.9rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
-        .form-group input:focus { border-color: #ff3b3b; }
-        .form-group input::placeholder { color: #6a7a8a; }
 
-        .btn-primary {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #ff3b3b, #e03030);
+        .form-group input:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 3px var(--primary-transparent);
+        }
+
+        .form-group input:focus + i.input-icon,
+        .form-group input:not(:placeholder-shown) + i.input-icon {
+            color: var(--primary-light);
+        }
+
+        .form-group input::placeholder {
+            color: var(--metal-dark);
+        }
+
+        .btn-submit {
+            padding: 12px 24px;
+            background: var(--primary);
             color: #fff;
             border: none;
-            border-radius: 10px;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            justify-content: center;
         }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,59,59,0.3); }
-        .btn-success { background: linear-gradient(135deg, #2ed573, #26a65b); }
-        .btn-success:hover { box-shadow: 0 8px 25px rgba(46,213,115,0.3); }
 
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .btn-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+        }
+
+        /* ==========================================
+           TABELAS
+        ========================================== */
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
         th {
             text-align: left;
             padding: 12px;
-            color: #9aa4b8;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
             font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        td .email { color: #9aa4b8; font-size: 0.8rem; }
 
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-block;
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            vertical-align: middle;
         }
-        .status-badge.admin { background: rgba(255,59,59,0.15); color: #ff6b6b; }
-        .status-badge.user { background: rgba(46,213,115,0.15); color: #2ed573; }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        td .email {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ==========================================
+           STATUS BADGES
+        ========================================== */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.admin { background: rgba(200, 16, 46, 0.1); border: 1px solid rgba(200, 16, 46, 0.2); color: #f87171; }
+        .status-badge.user { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #34d399; }
+
+        /* ==========================================
+           BOTÕES DE AÇÃO (TABELAS)
+        ========================================== */
+        .actions-cell {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
 
         .btn-sm {
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid transparent;
             color: #fff;
             font-weight: 600;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-sm:hover { transform: scale(1.05); }
-        .btn-sm.danger { background: #ff3b3b; }
-        .btn-sm.success { background: #2ed573; }
-        .btn-sm.secondary { background: #6a7a8a; }
-        .actions-cell { display: flex; gap: 5px; flex-wrap: wrap; }
-
-        .loading { text-align: center; padding: 40px; color: #6a7a8a; }
-        .loading i { font-size: 2rem; display: block; margin-bottom: 10px; }
-        .empty-state { text-align: center; padding: 30px; color: #6a7a8a; }
-        .empty-state i { font-size: 2rem; display: block; margin-bottom: 10px; opacity: 0.5; }
-
-        .count-badge {
-            padding: 4px 14px;
-            border-radius: 50px;
-            background: rgba(255,59,59,0.1);
-            color: #ff6b6b;
-            font-size: 0.8rem;
-            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
 
+        .btn-sm:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-sm.danger { background: rgba(200, 16, 46, 0.1); color: #f87171; border-color: rgba(200, 16, 46, 0.3); }
+        .btn-sm.danger:hover { background: var(--primary); color: #fff; }
+
+        /* ==========================================
+           LOADING E EMPTY STATES
+        ========================================== */
+        .loading, .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--metal-dark);
+            font-size: 0.85rem;
+        }
+
+        .loading i, .empty-state i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        /* ==========================================
+           TOAST NOTIFICATION
+        ========================================== */
         .toast {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 16px 24px;
-            border-radius: 12px;
+            padding: 14px 20px;
+            border-radius: 8px;
             font-weight: 600;
+            font-size: 0.85rem;
             z-index: 9999;
             transform: translateX(120%);
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid transparent;
         }
-        .toast.show { transform: translateX(0); }
-        .toast.success { background: rgba(46,213,115,0.95); color: #fff; border: 1px solid rgba(46,213,115,0.3); }
-        .toast.error { background: rgba(255,59,59,0.95); color: #fff; border: 1px solid rgba(255,59,59,0.3); }
-        .toast.info { background: rgba(88,166,255,0.95); color: #fff; border: 1px solid rgba(88,166,255,0.3); }
 
+        .toast.show { transform: translateX(0); }
+
+        .toast.success { background: var(--bg-card); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+        .toast.error { background: var(--bg-card); color: #f87171; border-color: rgba(200, 16, 46, 0.3); }
+        .toast.info { background: var(--bg-card); color: #60a5fa; border-color: rgba(59, 130, 246, 0.3); }
+
+        /* ==========================================
+           RESPONSIVO
+        ========================================== */
         @media (max-width: 768px) {
-            .admin-header { flex-direction: column; text-align: center; }
-            .admin-header .header-actions { justify-content: center; }
+            .admin-header { flex-direction: column; text-align: center; padding: 20px; }
+            .header-actions { justify-content: center; width: 100%; }
             .section-card { padding: 15px; }
-            table { font-size: 0.8rem; }
-            th, td { padding: 8px 6px; }
+            table { font-size: 0.75rem; }
+            th, td { padding: 10px 8px; }
             .actions-cell { flex-direction: column; }
-            .toast { top: 10px; right: 10px; left: 10px; max-width: none; font-size: 0.9rem; padding: 12px 16px; }
+            .toast { top: 10px; right: 10px; left: 10px; max-width: none; }
         }
+
         @media (max-width: 480px) {
             .admin-header .title { font-size: 1.2rem; }
-            .admin-header .badge { font-size: 0.7rem; padding: 4px 12px; }
-            .btn-primary { width: 100%; justify-content: center; }
+            .btn-header { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -219,16 +462,19 @@
             <!-- HEADER -->
             <div class="admin-header">
                 <div>
-                    <div class="title">👑 Gerenciar <span>Administradores</span></div>
-                    <div style="color: #9aa4b8; font-size: 0.9rem;">Adicione ou remova administradores do sistema</div>
+                    <div class="title">
+                        <i class="fa-solid fa-crown" style="color: var(--primary-light);"></i>
+                        Gerenciar <span>Administradores</span>
+                    </div>
+                    <div class="subtitle">Adicione ou remova permissões de acesso ao sistema.</div>
                 </div>
                 <div class="header-actions">
-                    <span class="badge"><i class="fas fa-shield-alt"></i> Admin</span>
-                    <a href="admin.html" class="btn-back">
-                        <i class="fas fa-arrow-left"></i> Voltar
+                    <span class="badge"><i class="fa-solid fa-user-shield"></i> Admin</span>
+                    <a href="admin.html" class="btn-header">
+                        <i class="fa-solid fa-arrow-left"></i> Voltar
                     </a>
-                    <button class="btn-logout" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Sair
+                    <button class="btn-header danger" id="logoutBtn">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
                     </button>
                 </div>
             </div>
@@ -236,16 +482,19 @@
             <!-- ADICIONAR ADMIN -->
             <div class="section-card">
                 <div class="section-header">
-                    <h3>➕ Adicionar <span>Administrador</span></h3>
-                    <span style="color: #6a7a8a; font-size: 0.85rem;">Digite o email do usuário</span>
+                    <h3><i class="fa-solid fa-user-plus" style="color: var(--text-muted);"></i> Adicionar <span>Administrador</span></h3>
+                    <span style="color: var(--text-muted); font-size: 0.75rem;">Digite o email do usuário cadastrado</span>
                 </div>
                 <form id="addAdminForm">
                     <div class="form-group">
                         <label>Email do Usuário</label>
-                        <input type="email" id="adminEmail" placeholder="usuario@email.com" required>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope input-icon"></i>
+                            <input type="email" id="adminEmail" placeholder="usuario@email.com" required>
+                        </div>
                     </div>
-                    <button type="submit" class="btn-primary btn-success">
-                        <i class="fas fa-user-plus"></i> Adicionar como Admin
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-crown"></i> Adicionar como Admin
                     </button>
                 </form>
             </div>
@@ -253,7 +502,7 @@
             <!-- LISTA DE ADMINS -->
             <div class="section-card">
                 <div class="section-header">
-                    <h3>👥 Administradores <span>Atuais</span></h3>
+                    <h3><i class="fa-solid fa-users" style="color: var(--text-muted);"></i> Administradores <span>Atuais</span></h3>
                     <span class="count-badge" id="adminsCount">0</span>
                 </div>
                 <div class="table-wrap">
@@ -268,9 +517,7 @@
                         </thead>
                         <tbody id="adminsTableBody">
                             <tr>
-                                <td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;">
-                                    <i class="fas fa-spinner fa-spin"></i> Carregando...
-                                </td>
+                                <td colspan="4" class="loading"><i class="fas fa-spinner fa-spin"></i> Carregando...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -296,11 +543,15 @@
         let toastTimeout;
 
         function showToast(message, type = 'info') {
-            toast.textContent = message;
+            let icon = type === 'success' ? '<i class="fa-solid fa-circle-check"></i>' : 
+                       type === 'error' ? '<i class="fa-solid fa-circle-exclamation"></i>' : 
+                       '<i class="fa-solid fa-circle-info"></i>';
+            
+            toast.innerHTML = `${icon} <span>${message}</span>`;
             toast.className = `toast ${type}`;
             toast.classList.add('show');
             clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3500);
         }
 
         // ============================================
@@ -319,11 +570,10 @@
         }
 
         // ============================================
-        // CARREGAR LISTA DE ADMINS (SEM RLS)
+        // CARREGAR LISTA DE ADMINS
         // ============================================
         async function loadAdmins() {
             try {
-                // Buscar todos os admins
                 const { data: admins, error: adminsError } = await supabaseClient
                     .from('admins')
                     .select('*');
@@ -333,16 +583,11 @@
                 const tbody = document.getElementById('adminsTableBody');
 
                 if (!admins || admins.length === 0) {
-                    tbody.innerHTML =
-                        `<tr><td colspan="4" style="text-align:center;color:#6a7a8a;padding:30px;">
-                            <i class="fas fa-inbox" style="font-size:1.5rem;display:block;margin-bottom:10px;"></i>
-                            Nenhum administrador cadastrado
-                        </td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" class="empty-state"><i class="fa-solid fa-inbox"></i>Nenhum administrador cadastrado</td></tr>`;
                     document.getElementById('adminsCount').textContent = '0';
                     return;
                 }
 
-                // Buscar informações dos usuários manualmente
                 let usersWithNames = [];
 
                 for (const admin of admins) {
@@ -383,7 +628,7 @@
                     row.innerHTML = `
                         <td><strong>${admin.name}</strong></td>
                         <td><span class="email">${admin.email}</span></td>
-                        <td><span class="status-badge admin">👑 Admin</span></td>
+                        <td><span class="status-badge admin"><i class="fa-solid fa-crown"></i> Admin</span></td>
                         <td>
                             <div class="actions-cell">
                                 <button class="btn-sm danger" onclick="removeAdmin('${admin.user_id}')">
@@ -400,8 +645,8 @@
             } catch (error) {
                 console.error('❌ Erro ao carregar admins:', error);
                 document.getElementById('adminsTableBody').innerHTML = `
-                    <tr><td colspan="4" style="text-align:center;color:#ff6b6b;padding:20px;">
-                        ❌ Erro ao carregar administradores: ${error.message}
+                    <tr><td colspan="4" style="text-align:center;color:#f87171;padding:20px;">
+                        ❌ Erro ao carregar administradores.
                     </td></tr>
                 `;
             }
@@ -421,12 +666,12 @@
 
                 if (error) throw error;
 
-                showToast('✅ Administrador removido com sucesso!', 'success');
+                showToast('Administrador removido com sucesso!', 'success');
                 await loadAdmins();
 
             } catch (error) {
                 console.error('❌ Erro:', error);
-                showToast(`❌ Erro ao remover: ${error.message}`, 'error');
+                showToast(`Erro ao remover: ${error.message}`, 'error');
             }
         };
 
@@ -439,12 +684,11 @@
             const email = document.getElementById('adminEmail').value.trim();
 
             if (!email) {
-                showToast('❌ Digite um email válido.', 'error');
+                showToast('Digite um email válido.', 'error');
                 return;
             }
 
             try {
-                // Buscar usuário pelo email
                 const { data: users, error: userError } = await supabaseClient
                     .from('user_profiles')
                     .select('id, email')
@@ -453,13 +697,12 @@
                 if (userError) throw userError;
 
                 if (!users || users.length === 0) {
-                    showToast('❌ Usuário não encontrado. Verifique o email.', 'error');
+                    showToast('Usuário não encontrado. Verifique o email.', 'error');
                     return;
                 }
 
                 const user = users[0];
 
-                // Verificar se já é admin
                 const { data: existing } = await supabaseClient
                     .from('admins')
                     .select('*')
@@ -467,24 +710,23 @@
                     .single();
 
                 if (existing) {
-                    showToast('⚠️ Este usuário já é administrador.', 'info');
+                    showToast('Este usuário já é administrador.', 'info');
                     return;
                 }
 
-                // Adicionar como admin
                 const { error: insertError } = await supabaseClient
                     .from('admins')
                     .insert({ user_id: user.id, role: 'admin' });
 
                 if (insertError) throw insertError;
 
-                showToast(`✅ ${email} agora é administrador!`, 'success');
+                showToast(`${email} agora é administrador!`, 'success');
                 document.getElementById('adminEmail').value = '';
                 await loadAdmins();
 
             } catch (error) {
                 console.error('❌ Erro:', error);
-                showToast(`❌ Erro ao adicionar: ${error.message}`, 'error');
+                showToast(`Erro ao adicionar: ${error.message}`, 'error');
             }
         });
 
@@ -498,14 +740,12 @@
             }
 
             const user = session.user;
-            console.log('👤 Usuário logado:', user.email);
-
-            // FORÇAR ADMIN PARA SEU ID
+            
             const adminIds = ['6e1b204b-7636-4abf-9a20-5a46e726906d'];
             const isAdmin = adminIds.includes(user.id) || await checkIsAdmin(user.id);
 
             if (!isAdmin) {
-                showToast('❌ Você não tem permissão.', 'error');
+                showToast('Você não tem permissão para acessar esta página.', 'error');
                 setTimeout(() => {
                     window.location.href = '../dashboard/index.html';
                 }, 1500);
